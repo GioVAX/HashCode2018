@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PracticeApp": {
+      "commandName": "Project",
+      "commandLineArgs": "a_example.in"
+    }
+  }
+}
