@@ -1,4 +1,3 @@
-using System;
 using FluentAssertions;
 using PracticeApp;
 using Xunit;
@@ -8,7 +7,7 @@ namespace PracticeAppUnitTests
     public class PizzaUnitTests
     {
         [Fact]
-        public void UsingExampleInput_GivesTheExamplePizza()
+        public void WhenUsingExampleInput_ShouldReturnTheExamplePizza()
         {
             var pizza = new PizzaDescription(@"..\..\..\..\a_example.in");
 
@@ -26,7 +25,7 @@ namespace PracticeAppUnitTests
         }
 
         [Fact]
-        public void UsingSmallInput_GivesTheSmallPizza()
+        public void WhenUsingSmallInput_ShouldReturnTheSmallPizza()
         {
             var pizza = new PizzaDescription(@"..\..\..\..\b_small.in");
 
