@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using FluentAssertions;
 using PracticeApp;
 using Xunit;
@@ -9,7 +7,7 @@ namespace PracticeAppUnitTests
 {
     public class SliceValidatorUnitTests
     {
-        private SliceValidator _sut;
+        private readonly SliceValidator _sut;
 
         public SliceValidatorUnitTests()
         {
@@ -21,6 +19,17 @@ namespace PracticeAppUnitTests
             };
 
             _sut = new SliceValidator(ingredients);
+        }
+
+        [Theory]
+        [InlineData(-1, 0, 2, 1)]
+        [InlineData(0, -1, 2, 1)]
+        public void ValidatingSliceOutsideOfPizza_ShouldReturnFalse(int topX, int topY, int width, int height)
+        {
+            var slice = new Slice(new Point(topX, topY), new SliceTemplate(width, height));
+
+            _sut.IsSliceValid(slice, 0)
+                .Should().BeFalse();
         }
 
         [Theory]

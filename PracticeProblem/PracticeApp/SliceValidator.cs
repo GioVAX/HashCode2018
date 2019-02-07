@@ -26,12 +26,15 @@ namespace PracticeApp
 
         public bool IsSliceValid(Slice slice, int maxValue)
         {
-            // Assumption: slice will always be fully contained in the array!
-
             var leftX = slice.Origin.X;
             var topY = slice.Origin.Y;
-            var rightX = leftX + slice.Width -1;
-            var bottomY = topY + slice.Height-1;
+            var rightX = leftX + slice.Width - 1;
+            var bottomY = topY + slice.Height - 1;
+
+            if (leftX < 0 || topY < 0)
+                return false;
+
+
 
             var baseValue = _sumValues[rightX, bottomY];
             if (leftX != 0)
