@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Linq;
 
 namespace PracticeApp
 {
@@ -17,13 +20,14 @@ namespace PracticeApp
 
         public PizzaDescription(string inputFile)
         {
-            var reader = new StreamReader(File.Open(inputFile, FileMode.Open));
+            using (var reader = new StreamReader(File.Open(inputFile, FileMode.Open)))
+            {
+                ReadSizes(reader.ReadLine());
 
-            ReadSizes(reader.ReadLine());
+                Ingredients = new int[Height, Width];
 
-            Ingredients = new int[Height, Width];
-
-            ReadIngredients(reader);
+                ReadIngredients(reader);
+            }
         }
 
         private void ReadIngredients(StreamReader reader)
@@ -44,6 +48,30 @@ namespace PracticeApp
             Width = Convert.ToInt32(sizes[1]);
             MinSlice = Convert.ToInt32(sizes[2]) * 2;
             MaxSlice = Convert.ToInt32(sizes[3]);
+        }
+
+        public IEnumerable<Slice> ValidSlices
+        {
+            get
+            {
+                var validator = new SliceValidator(Ingredients, MinSlice, MaxSlice);
+
+                return AllSlices
+                    .Where(s => validator.IsSliceValid(s));
+            }
+        }
+
+        public IEnumerable<Slice> AllSlices
+        {
+            get
+            {
+                var sizes = new SliceSizes().Generate(MinSlice, MaxSlice).ToArray();
+
+                for (var row = 0; row < Height; ++row)
+                    for (var col = 0; col < Width; ++col)
+                        foreach (var size in sizes)
+                            yield return new Slice(new Point(col, row), size);
+            }
         }
     }
 }
