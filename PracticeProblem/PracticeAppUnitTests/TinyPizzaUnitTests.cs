@@ -6,17 +6,17 @@ using Xunit;
 
 namespace PracticeAppUnitTests
 {
-    public class Tiny
+    public class TinyPizzaUnitTests
     {
         private readonly PizzaDescription _sut;
 
-        public Tiny()
+        public TinyPizzaUnitTests()
         {
             _sut = new PizzaDescription(@"..\..\..\..\tiny.in");
         }
 
         [Fact]
-        public void Sut_ShouldContainTheExamplePizza()
+        public void Sut_ShouldContainTheTinyPizza()
         {
 
             _sut.Width.Should().Be(3);
