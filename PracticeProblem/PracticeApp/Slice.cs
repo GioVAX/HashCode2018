@@ -4,16 +4,18 @@ namespace PracticeApp
 {
     public class Slice
     {
-        public Point Origin { get; private set; }
+        public int TopRow { get; }
+        public int LeftCol { get; }
 
-        private readonly SliceTemplate _template;
-        public int Width => _template.Width;
-        public int Height => _template.Height;
+        public int Width { get; }
+        public int Height { get; }
 
-        public Slice(Point origin, SliceTemplate template)
+        public Slice(Point origin, Size size)
         {
-            Origin = origin;
-            _template = template;
+            TopRow = origin.Y;
+            LeftCol = origin.X;
+            Width = size.Width;
+            Height = size.Height;
         }
     }
 }

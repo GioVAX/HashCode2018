@@ -23,26 +23,5 @@ namespace PracticeAppUnitTests
                     { 1, 1, 1, 1, 1 }
                 });
         }
-
-        [Fact]
-        public void WhenUsingSmallInput_ShouldReturnTheSmallPizza()
-        {
-            var pizza = new PizzaDescription(@"..\..\..\..\b_small.in");
-
-            pizza.Width.Should().Be(7);
-            pizza.Height.Should().Be(6);
-            pizza.MinSlice.Should().Be(2);
-            pizza.MaxSlice.Should().Be(5);
-
-            pizza.Ingredients.Should()
-                .BeEquivalentTo(new[,] {
-                    { 1, -1, -1, -1, 1, 1, 1 },
-                    { -1, -1, -1, -1, 1, -1, -1 },
-                    { 1, 1, -1, 1, 1, -1, 1 },
-                    { 1, -1, -1, 1, -1, -1, -1 },
-                    { 1, 1, 1, 1, 1, 1, -1 },
-                    { 1, 1, 1, 1, 1, 1, -1 }
-                });
-        }
     }
 }

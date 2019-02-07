@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using FluentAssertions;
 using PracticeApp;
 using Xunit;
@@ -7,11 +8,11 @@ namespace PracticeAppUnitTests
 {
     public class TemplatesUnitTests
     {
-        private Templates _sut;
+        private SliceSizes _sut;
 
         public TemplatesUnitTests()
         {
-            _sut = new Templates();
+            _sut = new SliceSizes();
         }
 
         [Fact]
@@ -20,7 +21,7 @@ namespace PracticeAppUnitTests
             _sut.Generate(3, 4).Should()
                 .NotBeNull()
                 .And.OnlyHaveUniqueItems()
-                .And.AllBeOfType(typeof(SliceTemplate));
+                .And.AllBeOfType(typeof(Size));
         }
 
         [Fact]
@@ -28,15 +29,15 @@ namespace PracticeAppUnitTests
         {
             _sut.Generate(2, 4).Should()
                 .BeEquivalentTo(
-                    new List<SliceTemplate>
+                    new List<Size>
                     {
-                        new SliceTemplate(1, 2),
-                        new SliceTemplate(2, 1),
-                        new SliceTemplate(1, 3),
-                        new SliceTemplate(3, 1),
-                        new SliceTemplate(1, 4),
-                        new SliceTemplate(2, 2),
-                        new SliceTemplate(4, 1)
+                        new Size(1, 2),
+                        new Size(2, 1),
+                        new Size(1, 3),
+                        new Size(3, 1),
+                        new Size(1, 4),
+                        new Size(2, 2),
+                        new Size(4, 1)
                     }
                 );
         }

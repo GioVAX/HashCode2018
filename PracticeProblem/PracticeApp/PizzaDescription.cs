@@ -13,7 +13,7 @@ namespace PracticeApp
         public int MaxSlice { get; private set; }
         public int MinSlice { get; private set; }
 
-        public int[,] Ingredients { get; private set; }
+        public int[,] Ingredients { get; }
 
         public PizzaDescription(string inputFile)
         {
@@ -23,6 +23,11 @@ namespace PracticeApp
 
             Ingredients = new int[Height, Width];
 
+            ReadIngredients(reader);
+        }
+
+        private void ReadIngredients(StreamReader reader)
+        {
             for (var r = 0; r < Height; ++r)
             {
                 var line = reader.ReadLine();
@@ -30,10 +35,11 @@ namespace PracticeApp
                     Ingredients[r, c] = line[c] == TOMATO ? 1 : -1;
             }
         }
-        
+
         private void ReadSizes(string line)
         {
             var sizes = line.Split(' ');
+
             Height = Convert.ToInt32(sizes[0]);
             Width = Convert.ToInt32(sizes[1]);
             MinSlice = Convert.ToInt32(sizes[2]) * 2;
