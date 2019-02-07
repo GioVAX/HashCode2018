@@ -4,24 +4,19 @@ using Xunit;
 
 namespace PracticeAppUnitTests
 {
-    public class ExamplePizzaUnitTests
+    public class PizzaDescriptionUnitTests
     {
-        private PizzaDescription _sut;
-
-        public ExamplePizzaUnitTests()
-        {
-            _sut = new PizzaDescription(@"..\..\..\..\a_example.in");
-        }
-
         [Fact]
         public void Sut_ShouldContainTheExamplePizza()
         {
-            _sut.Width.Should().Be(5);
-            _sut.Height.Should().Be(3);
-            _sut.MinSlice.Should().Be(2);
-            _sut.MaxSlice.Should().Be(6);
+            var pizza = new PizzaDescription(@"..\..\..\..\a_example.in");
 
-            _sut.Ingredients.Should()
+            pizza.Width.Should().Be(5);
+            pizza.Height.Should().Be(3);
+            pizza.MinSlice.Should().Be(2);
+            pizza.MaxSlice.Should().Be(6);
+
+            pizza.Ingredients.Should()
                 .BeEquivalentTo(new[,] {
                     { 1, 1, 1, 1, 1 },
                     { 1, -1, -1, -1, 1 },
