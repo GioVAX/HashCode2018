@@ -49,8 +49,7 @@ namespace PracticeAppUnitTests
                 .NotBeNull()
                 .And.AllBeAssignableTo<Slice>()
                 .And.OnlyHaveUniqueItems()
-                .And.HaveCount(24);
+                .And.HaveCount(34);
         }
-
     }
 }
