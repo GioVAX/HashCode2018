@@ -2,7 +2,7 @@
   "profiles": {
     "PracticeApp": {
       "commandName": "Project",
-      "commandLineArgs": "a_example.in"
+      "commandLineArgs": "..\\..\\..\\..\\d_big.in"
     }
   }
 }

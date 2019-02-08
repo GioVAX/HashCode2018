@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace PracticeApp
 {
@@ -17,6 +18,9 @@ namespace PracticeApp
             Console.WriteLine($"Processing file {inputFile}");
 
             var pizza = new PizzaDescription(inputFile);
+            var slices = PizzaSlicer.Slice(pizza).ToList();
+            var size = slices.Sum(s => s.Size);
+
         }
     }
 }
