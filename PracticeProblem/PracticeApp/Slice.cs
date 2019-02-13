@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace PracticeApp
 {
@@ -13,6 +14,11 @@ namespace PracticeApp
 
         public int Size => Width * Height;
 
+        public Point TopLeft => new Point(LeftCol, TopRow);
+        public Point BottomRight => new Point(LeftCol + Width - 1, TopRow + Height - 1);
+
+        private IEnumerable<Point> _points;
+
         public Slice(Point origin, Size size)
         {
             TopRow = origin.Y;
@@ -21,13 +27,11 @@ namespace PracticeApp
             Height = size.Height;
         }
 
-        public IEnumerable<int> MapToArray(int arrayWidth)
-        {
-            for (var row = 0; row < Height; ++row)
-                for (var col = 0; col < Width; ++col)
-                {
-                    yield return ((TopRow + row) * arrayWidth) + (LeftCol + col);
-                }
-        }
+        public IEnumerable<Point> Points =>
+            _points ?? (_points = Enumerable.Range(TopRow, Height)
+                .SelectMany(row => Enumerable.Range(LeftCol, Width).Select(col => new Point(col, row))));
+
+        public IEnumerable<int> MapToArray(int arrayWidth) =>
+            Points.Select(pnt => pnt.X + (pnt.Y * arrayWidth));
     }
 }

@@ -53,8 +53,7 @@ namespace PracticeApp
             {
                 var validator = new SliceValidator(Ingredients, MinSlice, MaxSlice);
 
-                return AllSlices
-                    .Where(s => validator.IsSliceValid(s));
+                return AllSlices.Where(validator.IsSliceValid);
             }
         }
 
