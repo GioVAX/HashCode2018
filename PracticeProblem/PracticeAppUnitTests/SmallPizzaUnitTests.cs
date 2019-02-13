@@ -1,3 +1,4 @@
+using System.IO;
 using FluentAssertions;
 using PracticeApp;
 using Xunit;
@@ -10,7 +11,10 @@ namespace PracticeAppUnitTests
 
         public SmallPizzaUnitTests()
         {
-            _sut = new PizzaDescription(@"..\..\..\..\b_small.in");
+            using (var reader = new StreamReader(File.Open(@"..\..\..\..\b_small.in", FileMode.Open)))
+            {
+                _sut = new PizzaDescription(reader);
+            }
         }
 
         [Fact]

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using FluentAssertions;
 using PracticeApp;
 using Xunit;
@@ -12,7 +13,10 @@ namespace PracticeAppUnitTests
 
         public ExamplePizzaUnitTests()
         {
-            _sut = new PizzaDescription(@"..\..\..\..\a_example.in");
+            using (var reader = new StreamReader(File.Open(@"..\..\..\..\a_example.in", FileMode.Open)))
+            {
+                _sut = new PizzaDescription(reader);
+            }
         }
 
         [Fact]

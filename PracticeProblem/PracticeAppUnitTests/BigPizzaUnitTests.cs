@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using FluentAssertions;
 using PracticeApp;
 using Xunit;
@@ -12,7 +13,10 @@ namespace PracticeAppUnitTests
 
         public BigPizzaUnitTests()
         {
-            _sut = new PizzaDescription(@"..\..\..\..\d_big.in");
+            using (var reader = new StreamReader(File.Open(@"..\..\..\..\d_big.in", FileMode.Open)))
+            {
+                _sut = new PizzaDescription(reader);
+            }
         }
 
         [Fact]
@@ -47,7 +51,7 @@ namespace PracticeAppUnitTests
                 .NotBeNull()
                 .And.AllBeAssignableTo<Slice>()
                 .And.OnlyHaveUniqueItems()
-                .And.HaveCount(12);
+                .And.HaveCount(4454943);
         }
     }
 }

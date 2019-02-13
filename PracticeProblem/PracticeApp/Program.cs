@@ -17,7 +17,12 @@ namespace PracticeApp
             var inputFile = Path.GetFullPath(args[0]);
             Console.WriteLine($"Processing file {inputFile}");
 
-            var pizza = new PizzaDescription(inputFile);
+            PizzaDescription pizza;
+            using (var reader = new StreamReader(File.Open(inputFile, FileMode.Open)))
+            {
+                pizza = new PizzaDescription(reader);
+            }
+
             var slices = PizzaSlicer.Slice(pizza).ToList();
             var size = slices.Sum(s => s.Size);
 

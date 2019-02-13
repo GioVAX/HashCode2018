@@ -12,7 +12,7 @@ namespace PracticeAppUnitTests
         [Fact]
         public void WhenInitialized_ShouldContainMatrixOfValidSlices()
         {
-            var pizza = new PizzaDescription(@"..\..\..\..\tiny.in");
+            var pizza = new PizzaDescription(PizzaCases.Tiny);
             var slices = PizzaSlicer.CreateSliceDistribution(pizza.Width, pizza.Height, pizza.ValidSlices);
 
             slices.Should()
@@ -25,7 +25,7 @@ namespace PracticeAppUnitTests
         [Fact]
         public void WhenSlicingTinyPizza_ShouldReturn2Slices()
         {
-            var pizza = new PizzaDescription(@"..\..\..\..\tiny.in");
+            var pizza = new PizzaDescription(PizzaCases.Tiny);
             var slices = PizzaSlicer.Slice(pizza);
 
             slices.Should()

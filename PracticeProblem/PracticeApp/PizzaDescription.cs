@@ -18,19 +18,16 @@ namespace PracticeApp
 
         public int[,] Ingredients { get; }
 
-        public PizzaDescription(string inputFile)
+        public PizzaDescription(TextReader reader)
         {
-            using (var reader = new StreamReader(File.Open(inputFile, FileMode.Open)))
-            {
-                ReadSizes(reader.ReadLine());
+            ReadSizes(reader.ReadLine());
 
-                Ingredients = new int[Height, Width];
+            Ingredients = new int[Height, Width];
 
-                ReadIngredients(reader);
-            }
+            ReadIngredients(reader);
         }
 
-        private void ReadIngredients(StreamReader reader)
+        private void ReadIngredients(TextReader reader)
         {
             for (var r = 0; r < Height; ++r)
             {
