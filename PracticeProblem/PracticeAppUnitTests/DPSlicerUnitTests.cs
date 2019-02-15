@@ -21,7 +21,7 @@ namespace PracticeAppUnitTests
         [Theory]
         [InlineData("3 3 1 3\nTTT\nTMM\nTTT", 6)]
         [InlineData("3 5 1 6\nTTTTT\nTMMMT\nTTTTT", 15)]
-        [InlineData("6 7 1 5\nTMMMTTT\nMMMMTMM\nTTMTTMT\nTMMTMMM\nTTTTTTM\nTTTTTTM",42)]
+        [InlineData("6 7 1 5\nTMMMTTT\nMMMMTMM\nTTMTTMT\nTMMTMMM\nTTTTTTM\nTTTTTTM", 42)]
         public void Solve_ShouldReturnExpectedCoverage(string pizza, int expected)
         {
             var slicer = InitializeSlicer(pizza);
@@ -45,15 +45,24 @@ namespace PracticeAppUnitTests
             var sut = InitializeSlicer(pizza);
 
             _sut.SolutionSpace.Rank
-                .Should().Be(3);
+                .Should().Be(2);
 
             _sut.SolutionSpace.GetLength(0)
                 .Should().Be(_pizza.Height);
 
             _sut.SolutionSpace.GetLength(1)
                 .Should().Be(_pizza.Width);
-            _sut.SolutionSpace.GetLength(2)
-                .Should().Be(_pizza.ValidSlices.Count() + 1);
+        }
+
+        [Fact]
+        public void SliceMediumPizza_ShouldReturn100K()
+        {
+            var input = new StreamReader( File.Open(@"..\..\..\..\c_medium.in", FileMode.Open));
+            var pizza = new PizzaDescription(input);
+            var slicer = new DPPizzaSlicer(pizza);
+
+            slicer.Solve()
+                .Should().Be(pizza.Width * pizza.Height);
         }
     }
 }

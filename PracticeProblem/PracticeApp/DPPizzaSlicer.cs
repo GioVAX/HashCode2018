@@ -15,10 +15,12 @@ namespace PracticeApp
             _pizza = pizza;
         }
 
-        private int[,,] _solutionSpace;
+        private int[,] _solutionSpace;
 
-        public int[,,] SolutionSpace =>
-            _solutionSpace ?? (_solutionSpace = new int[_pizza.Height, _pizza.Width, _pizza.ValidSlices.Count() + 1]);
+        public int[,] SolutionSpace =>
+            _solutionSpace ?? (_solutionSpace = new int[_pizza.Height, _pizza.Width]);
+
+
 
         public int Solve()
         {
@@ -28,9 +30,12 @@ namespace PracticeApp
             for (var col = 0; col < _pizza.Width; ++col)
                 for (var row = 0; row < _pizza.Height; ++row)
                 {
-                    SolutionSpace[row,col,slicesCount] = Math.Max(
-                        row == 0 ? 0 : SolutionSpace[row - 1, col, slicesCount],
-                        col == 0 ? 0 : SolutionSpace[row, col - 1, slicesCount]);
+                    SolutionSpace[row, col] = Math.Max(
+                        row == 0 ? 0 : SolutionSpace[row - 1, col],
+                        col == 0 ? 0 : SolutionSpace[row, col - 1]);
+
+                    if (SolutionSpace[row, col] == (row + 1) * (col + 1))
+                        continue;
 
                     for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex)
                     {
@@ -50,13 +55,13 @@ namespace PracticeApp
                         {
                             var sectionUp = slice.TopRow == 0
                                 ? 0
-                                : SolutionSpace[slice.TopRow - 1, col, slicesCount];
+                                : SolutionSpace[slice.TopRow - 1, col];
                             var sectionLeft = slice.LeftCol == 0
                                 ? 0
-                                : SolutionSpace[row, slice.LeftCol - 1, slicesCount];
+                                : SolutionSpace[row, slice.LeftCol - 1];
                             var overlappingSection = slice.TopRow == 0 || slice.LeftCol == 0
                                 ? 0
-                                : SolutionSpace[slice.TopRow - 1, slice.LeftCol - 1, slicesCount];
+                                : SolutionSpace[slice.TopRow - 1, slice.LeftCol - 1];
 
                             valueWith = slice.Size
                                         + sectionUp
@@ -64,12 +69,14 @@ namespace PracticeApp
                                         - overlappingSection;
                         }
 
-                        SolutionSpace[row, col, sliceIndex] =
-                            SolutionSpace[row,col,slicesCount] = Math.Max(SolutionSpace[row,col,slicesCount], valueWith);
+                        SolutionSpace[row, col] = Math.Max(SolutionSpace[row, col], valueWith);
+
+                        if (SolutionSpace[row, col] == (row + 1) * (col + 1))
+                            break;
                     }
                 }
 
-            return SolutionSpace[_pizza.Height - 1, _pizza.Width - 1, slicesCount];
+            return SolutionSpace[_pizza.Height - 1, _pizza.Width - 1];
         }
     }
 }
