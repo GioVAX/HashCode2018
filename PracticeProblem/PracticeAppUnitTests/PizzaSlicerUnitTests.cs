@@ -36,7 +36,7 @@ namespace PracticeAppUnitTests
         [Fact]
         public void RemoveSlice_ShouldRemoveOneSlice()
         {
-            var slices = new List<Slice>[4]
+            var slices = new []
                 {new List<Slice>(), new List<Slice>(), new List<Slice>(), new List<Slice>()};
 
             var slice1 = new Slice(new Point(0, 0), new Size(2, 1));
@@ -64,7 +64,7 @@ namespace PracticeAppUnitTests
         [Fact]
         public void CallingEmptySliceSpace_ShouldRemoveAllSlices()
         {
-            var slices = new List<Slice>[4]
+            var slices = new []
                 {new List<Slice>(), new List<Slice>(), new List<Slice>(), new List<Slice>()};
 
             var slice1 = new Slice(new Point(0, 0), new Size(2, 1));
