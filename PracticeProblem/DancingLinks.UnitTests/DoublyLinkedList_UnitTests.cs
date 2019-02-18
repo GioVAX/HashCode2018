@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoFixture;
 using FluentAssertions;
-using PracticeApp;
 using Xunit;
 
-namespace PracticeAppUnitTests
+namespace DancingLinks.UnitTests
 {
     public class DoublyLinkedList_UnitTests : DoublyLinkedList_UnitTestsBase
     {

@@ -1,9 +1,8 @@
 ﻿using System.Linq;
 using FluentAssertions;
-using PracticeApp;
 using Xunit;
 
-namespace PracticeAppUnitTests
+namespace DancingLinks.UnitTests
 {
     public class DoublyLinkedList_CreateFromList_UnitTests : DoublyLinkedList_UnitTestsBase
     {

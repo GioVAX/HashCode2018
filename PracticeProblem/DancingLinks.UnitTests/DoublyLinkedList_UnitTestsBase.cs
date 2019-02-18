@@ -1,8 +1,7 @@
 ﻿using AutoFixture;
 using FluentAssertions;
-using PracticeApp;
 
-namespace PracticeAppUnitTests
+namespace DancingLinks.UnitTests
 {
     public class DoublyLinkedList_UnitTestsBase
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PracticeApp
+namespace DancingLinks
 {
     public class DoublyLinkedList<T>
     {
