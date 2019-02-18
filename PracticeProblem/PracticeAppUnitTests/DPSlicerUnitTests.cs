@@ -55,7 +55,7 @@ namespace PracticeAppUnitTests
         }
 
         [Fact]
-        public void SliceMediumPizza_ShouldReturn100K()
+        public void SliceMediumPizza_ShouldReturn50K()
         {
             var input = new StreamReader( File.Open(@"..\..\..\..\c_medium.in", FileMode.Open));
             var pizza = new PizzaDescription(input);
