@@ -1,13 +1,18 @@
 ﻿using FluentAssertions;
-using PracticeApp;
+using Xunit;
 
-namespace PracticeAppUnitTests
+namespace DancingLinks.UnitTests
 {
     public class DancingLinksPlatformUnitTests
     {
         private readonly DancingLinksPlatform _sut;
 
-        //[Fact]
+        public DancingLinksPlatformUnitTests()
+        {
+            _sut = new DancingLinksPlatform();
+        }
+
+        [Fact]
         public void CreatePlatform()
         {
             _sut.Should()

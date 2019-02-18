@@ -1,4 +1,4 @@
-﻿namespace PracticeApp
+﻿namespace DancingLinks
 {
     public class DancingLinksPlatform
     {
