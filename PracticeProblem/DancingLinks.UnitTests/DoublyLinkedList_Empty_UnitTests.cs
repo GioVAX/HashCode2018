@@ -1,4 +1,4 @@
-﻿using AutoFixture;
+using AutoFixture;
 using FluentAssertions;
 using Xunit;
 
@@ -15,6 +15,9 @@ namespace DancingLinks.UnitTests
 
         [Fact]
         public void WhenCreated_ShouldHaveLastNull() => Sut.Last.Should().BeNull();
+
+        [Fact]
+        public void WhenCreated_ShouldHaveValuesEmpty() => Sut.Values.Should().NotBeNull().And.BeEmpty();
 
         [Fact]
         public void AddingOneValue_ShouldHaveSameFirstAndLastNode()
@@ -56,6 +59,5 @@ namespace DancingLinks.UnitTests
 
             CheckOneNodeList(value);
         }
-
     }
 }

@@ -7,6 +7,22 @@ namespace DancingLinks
         public DoublyLinkedListNode<T> First { get; private set; }
         public DoublyLinkedListNode<T> Last { get; private set; }
 
+        public IEnumerable<T> Values
+        {
+            get
+            {
+                if (First == null)
+                    yield break;
+
+                var node = First;
+                do
+                {
+                    yield return node.Value;
+                    node = node.Next;
+                } while (node != First);
+            }
+        }
+
         public DoublyLinkedList() : this(new List<T>())
         { }
 

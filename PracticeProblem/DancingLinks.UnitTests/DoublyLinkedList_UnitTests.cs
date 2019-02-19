@@ -141,5 +141,16 @@ namespace DancingLinks.UnitTests
             node.Previous
                 .Should().BeSameAs(prev);
         }
+
+        [Fact]
+        public void EnumeratingDLL_ShouldReturnAllValuesInTheOrderTheyWereAdded()
+        {
+            var expectedValues = InitWithNValues(15);
+
+            var values = Sut.Values.ToList();
+
+            values
+                .Should().ContainInOrder(expectedValues);
+        }
     }
 }
