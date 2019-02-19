@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AutoFixture.Xunit2;
 using FluentAssertions;
@@ -60,6 +60,17 @@ namespace DancingLinks.UnitTests
             _sut.Items
                 .Should().HaveCount(expectedItems.Count)
                 .And.BeEquivalentTo(expectedItems);
+        }
+
+        [Theory, AutoData]
+        public void WhenTwoOptionsAreAdded_ShouldNotContainDuplicatedItems(List<TestOption> options)
+        {
+            options.ForEach(_sut.AddOption);
+
+            _sut.AddOption(options[0]);
+
+            _sut.Items
+                .Should().OnlyHaveUniqueItems();
         }
     }
 }

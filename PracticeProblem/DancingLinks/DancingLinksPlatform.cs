@@ -3,26 +3,32 @@ using System.Linq;
 
 namespace DancingLinks
 {
-    public class DancingLinksPlatform<T>
+    public class DancingLinksPlatform<TItem>
     {
-        private readonly DoublyLinkedList<IDlOption<T>> _options;
-        private readonly DoublyLinkedList<T> _items;
+        private readonly DoublyLinkedList<IDlOption<TItem>> _options;
+        private readonly Dictionary<TItem, DoublyLinkedList<IDlOption<TItem>>> _items;
 
-        public IEnumerable<IDlOption<T>> Options => _options.Values;
-        public IEnumerable<T> Items => _items.Values;
+        public IEnumerable<IDlOption<TItem>> Options => _options.Values;
+        public IEnumerable<TItem> Items => _items.Keys;
 
         public DancingLinksPlatform()
         {
-            _options = new DoublyLinkedList<IDlOption<T>>();
-            _items = new DoublyLinkedList<T>();
+            _options = new DoublyLinkedList<IDlOption<TItem>>();
+            _items = new Dictionary<TItem, DoublyLinkedList<IDlOption<TItem>>>();
         }
 
-        public void AddOption(IDlOption<T> option)
+        public void AddOption(IDlOption<TItem> option)
         {
             _options.AddValue(option);
 
             option.Items.ToList()
-                .ForEach(_items.AddValue);
+                .ForEach(item =>
+                {
+                    if (!_items.ContainsKey(item))
+                        _items[item] = new DoublyLinkedList<IDlOption<TItem>>();
+
+                    _items[item].AddValue(option);
+                });
         }
     }
 }
