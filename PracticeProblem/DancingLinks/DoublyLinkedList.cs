@@ -32,11 +32,7 @@ namespace DancingLinks
                 AddValue(value);
         }
 
-        public void AddValue(T value)
-        {
-            var newNode = new DoublyLinkedListNode<T>(value);
-            AppendNode(newNode);
-        }
+        public void AddValue(T value) => AppendNode(new DoublyLinkedListNode<T>(value));
 
         public void AppendNode(DoublyLinkedListNode<T> newNode)
         {
