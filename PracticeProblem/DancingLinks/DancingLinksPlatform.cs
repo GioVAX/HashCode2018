@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace DancingLinks
 {
@@ -16,6 +17,12 @@ namespace DancingLinks
             _items = new DoublyLinkedList<T>();
         }
 
-        public void AddOption(IDlOption<T> option) => _options.AddValue(option);
+        public void AddOption(IDlOption<T> option)
+        {
+            _options.AddValue(option);
+
+            option.Items.ToList()
+                .ForEach(_items.AddValue);
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using AutoFixture.Xunit2;
 using FluentAssertions;
@@ -30,6 +30,17 @@ namespace DancingLinks.UnitTests
         }
 
         [Theory, AutoData]
+        public void WhenOneOptionIsAdded_ShouldHaveCorrectItems(TestOption option)
+        {
+            _sut.AddOption(option);
+            var expectedItems = option.Items.ToList();
+
+            _sut.Items
+                .Should().HaveCount(expectedItems.Count)
+                .And.ContainInOrder(expectedItems);
+        }
+
+        [Theory, AutoData]
         public void WhenTwoOptionsAreAdded_ShouldHaveTwoOptionsInTheRightOrder(List<TestOption> options)
         {
             options.ForEach(_sut.AddOption);
@@ -37,6 +48,18 @@ namespace DancingLinks.UnitTests
             _sut.Options
                 .Should().HaveCount(options.Count)
                 .And.ContainInOrder(options);
+        }
+
+        [Theory, AutoData]
+        public void WhenTwoOptionsAreAdded_ShouldHaveAllTheItemsOfAllTheOptions(List<TestOption> options)
+        {
+            options.ForEach(_sut.AddOption);
+
+            var expectedItems = options.SelectMany(option => option.Items).Distinct().ToList();
+
+            _sut.Items
+                .Should().HaveCount(expectedItems.Count)
+                .And.BeEquivalentTo(expectedItems);
         }
     }
 }
