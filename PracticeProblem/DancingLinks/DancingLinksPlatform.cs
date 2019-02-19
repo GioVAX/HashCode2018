@@ -1,16 +1,19 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace DancingLinks
 {
     public class DancingLinksPlatform<T>
     {
-        public IEnumerable<IDlOption<T>> Options { get; }
-        public IEnumerable<T> Items { get; }
+        private DoublyLinkedList<IDlOption<T>> _options;
+        private DoublyLinkedList<T> _items;
+
+        public IEnumerable<IDlOption<T>> Options => _options.Values;
+        public IEnumerable<T> Items => _items.Values;
 
         public DancingLinksPlatform()
         {
-            Options = new List<IDlOption<T>>();
-            Items = new List<T>();
+            _options = new DoublyLinkedList<IDlOption<T>>();
+            _items = new DoublyLinkedList<T>();
         }
     }
 }
