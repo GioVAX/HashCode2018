@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoFixture;
+﻿using System.Linq;
+using AutoFixture.Xunit2;
 using FluentAssertions;
 using Xunit;
 
@@ -12,23 +10,6 @@ namespace DancingLinks.UnitTests
         public DoublyLinkedList_UnitTests()
             : base(new DoublyLinkedList<int>())
         { }
-
-        #region Private methods
-        private List<int> Init(int n, Action<int> action)
-        {
-            var values = Fixture.CreateMany<int>(n)
-                .ToList();
-
-            foreach (var v in values)
-                action(v);
-
-            return values;
-        }
-
-        private List<int> InitWithNValues(int n) => Init(n, val => Sut.AddValue(val));
-
-        private List<int> InitWithNNodes(int n) => Init(n, val => Sut.AppendNode(new DoublyLinkedListNode<int>(val)));
-        #endregion
 
         [Fact]
         public void AddingTwoValues_ShouldHaveDifferentFirstAndLastNode()
@@ -54,12 +35,11 @@ namespace DancingLinks.UnitTests
             CheckTwoNodesList(values[0], values[1]);
         }
 
-        [Fact]
-        public void InsertNodeWithANullInNextOrPrev_ShouldAppendToEndOfList()
+        [Theory, AutoData]
+        public void InsertNodeWithANullInNextOrPrev_ShouldAppendToEndOfList([Frozen]int newValue)
         {
             var values = InitWithNNodes(2);
 
-            var newValue = Fixture.Create<int>();
             var node = new DoublyLinkedListNode<int>(newValue);
 
             Sut.InsertNode(node);
@@ -94,10 +74,10 @@ namespace DancingLinks.UnitTests
                 .Should().Be(values[2]);
         }
 
-        [Fact]
-        public void RemoveNode_WhenLastNode_ShouldNullFirstAndLast()
+        [Theory, AutoData]
+        public void RemoveNode_WhenLastNode_ShouldNullFirstAndLast(int aValue)
         {
-            Sut.AddValue(Fixture.Create<int>());
+            Sut.AddValue(aValue);
 
             Sut.RemoveNode(Sut.First);
 

@@ -2,7 +2,7 @@
 
 namespace DancingLinks.UnitTests
 {
-    internal class TestOption : IDlOption<int>
+    public class TestOption : IDlOption<int>
     {
         public TestOption(IEnumerable<int> items)
         {

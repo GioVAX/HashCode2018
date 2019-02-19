@@ -1,4 +1,7 @@
-﻿using AutoFixture;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using AutoFixture;
 using FluentAssertions;
 
 namespace DancingLinks.UnitTests
@@ -6,13 +9,27 @@ namespace DancingLinks.UnitTests
     public class DoublyLinkedList_UnitTestsBase
     {
         protected DoublyLinkedList<int> Sut { get; }
-        protected Fixture Fixture { get; }
 
         protected DoublyLinkedList_UnitTestsBase(DoublyLinkedList<int> sut)
         {
             Sut = sut;
-            Fixture = new Fixture();
         }
+
+        #region Protected methods
+        private List<int> Init(int n, Action<int> action)
+        {
+            var values = new Fixture().CreateMany<int>(n)
+                .ToList();
+
+            values.ForEach(action);
+
+            return values;
+        }
+
+        protected List<int> InitWithNValues(int n) => Init(n, val => Sut.AddValue(val));
+
+        protected List<int> InitWithNNodes(int n) => Init(n, val => Sut.AppendNode(new DoublyLinkedListNode<int>(val)));
+        #endregion
 
         protected void CheckOneNodeList(int value)
         {

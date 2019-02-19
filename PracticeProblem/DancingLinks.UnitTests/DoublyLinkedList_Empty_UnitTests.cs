@@ -1,4 +1,4 @@
-using AutoFixture;
+using AutoFixture.Xunit2;
 using FluentAssertions;
 using Xunit;
 
@@ -19,20 +19,19 @@ namespace DancingLinks.UnitTests
         [Fact]
         public void WhenCreated_ShouldHaveValuesEmpty() => Sut.Values.Should().NotBeNull().And.BeEmpty();
 
-        [Fact]
-        public void AddingOneValue_ShouldHaveSameFirstAndLastNode()
+        [Theory, AutoData]
+        public void AddingOneValue_ShouldHaveSameFirstAndLastNode(int aValue)
         {
-            Sut.AddValue(Fixture.Create<int>());
+            Sut.AddValue(aValue);
 
             Sut.First
                 .Should().BeSameAs(Sut.Last);
         }
 
-        [Fact]
-        public void AppendOneNode_ShouldHaveSameFirstAndLastNode()
+        [Theory, AutoData]
+        public void AppendOneNode_ShouldHaveSameFirstAndLastNode(int aValue)
         {
-            var value = Fixture.Create<int>();
-            var node = new DoublyLinkedListNode<int>(value);
+            var node = new DoublyLinkedListNode<int>(aValue);
 
             Sut.AppendNode(node);
 
@@ -40,19 +39,17 @@ namespace DancingLinks.UnitTests
                 .Should().BeSameAs(Sut.Last);
         }
 
-        [Fact]
-        public void AddingOneValue_ShouldHaveFirstAndLastPointToEachOther()
+        [Theory, AutoData]
+        public void AddingOneValue_ShouldHaveFirstAndLastPointToEachOther([Frozen]int value)
         {
-            var value = Fixture.Create<int>();
             Sut.AddValue(value);
 
             CheckOneNodeList(value);
         }
 
-        [Fact]
-        public void AppendOneNode_ShouldHaveFirstAndLastPointToEachOther()
+        [Theory, AutoData]
+        public void AppendOneNode_ShouldHaveFirstAndLastPointToEachOther([Frozen]int value)
         {
-            var value = Fixture.Create<int>();
             var node = new DoublyLinkedListNode<int>(value);
 
             Sut.AppendNode(node);
