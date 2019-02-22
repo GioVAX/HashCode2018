@@ -36,7 +36,7 @@ namespace DancingLinks
                 });
         }
 
-        public Stack<DoublyLinkedListNode<DoublyLinkedList<IDlOption<TItem>>>> Cover(IDlOption<TItem> option)
+        public CoverResult<TItem> Cover(IDlOption<TItem> option)
         {
             var stack = new Stack<DoublyLinkedListNode<DoublyLinkedList<IDlOption<TItem>>>>();
 
@@ -46,7 +46,7 @@ namespace DancingLinks
                 .ToList()
                 .ForEach(stack.Push);
 
-            return stack;
+            return new CoverResult<TItem>(option, stack);
 
             //option.Items.Aggregate(new Stack<DoublyLinkedListNode<DoublyLinkedListOfItems>>(),
             //    (stack, item) =>

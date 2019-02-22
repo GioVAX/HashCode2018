@@ -58,10 +58,19 @@ namespace DancingLinks.UnitTests
         [Fact]
         public void CoverUniqueOption_ShouldReturnRemovedItems()
         {
-            var stack = _sut.Cover(_options[2]);
+            var result = _sut.Cover(_options[2]);
 
-            stack
+            result.Stack
                 .Should().HaveCount(_options[2].Items.Count());
+        }
+
+        [Fact]
+        public void CoverUniqueOption_ShouldReturnCoveredOption()
+        {
+            var covered = _sut.Cover(_options[2]);
+
+            covered.Option
+                .Should().Be(_options[2]);
         }
     }
 }
