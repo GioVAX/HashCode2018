@@ -1,20 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DancingLinks
 {
-    public class DancingLinksPlatform<TItem>
+    public class DancingLinksPlatform<TItem> where TItem : IComparable
     {
         private readonly DoublyLinkedList<IDlOption<TItem>> _options;
-        private readonly Dictionary<TItem, DoublyLinkedList<IDlOption<TItem>>> _items;
+        private readonly DoublyLinkedList<DoublyLinkedList<IDlOption<TItem>>> _items;
+        private readonly Dictionary<TItem, DoublyLinkedListNode<DoublyLinkedList<IDlOption<TItem>>>> _itemsIndex;
 
         public IEnumerable<IDlOption<TItem>> Options => _options.Values;
-        public IEnumerable<TItem> Items => _items.Keys;
+        public int ItemsCount => _items.Values.Count();
 
         public DancingLinksPlatform()
         {
             _options = new DoublyLinkedList<IDlOption<TItem>>();
-            _items = new Dictionary<TItem, DoublyLinkedList<IDlOption<TItem>>>();
+            _items = new DoublyLinkedList<DoublyLinkedList<IDlOption<TItem>>>();
+            _itemsIndex = new Dictionary<TItem, DoublyLinkedListNode<DoublyLinkedList<IDlOption<TItem>>>>();
         }
 
         public void AddOption(IDlOption<TItem> option)
@@ -24,11 +27,35 @@ namespace DancingLinks
             option.Items.ToList()
                 .ForEach(item =>
                 {
-                    if (!_items.ContainsKey(item))
-                        _items[item] = new DoublyLinkedList<IDlOption<TItem>>();
+                    if (!_itemsIndex.ContainsKey(item))
+                    {
+                        _itemsIndex[item] = _items.AddValue(new DoublyLinkedList<IDlOption<TItem>>());
+                    }
 
-                    _items[item].AddValue(option);
+                    _itemsIndex[item].Value.AddValue(option);
                 });
+        }
+
+        public Stack<DoublyLinkedListNode<DoublyLinkedList<IDlOption<TItem>>>> Cover(IDlOption<TItem> option)
+        {
+            var stack = new Stack<DoublyLinkedListNode<DoublyLinkedList<IDlOption<TItem>>>>();
+
+            option.Items
+                .Select(item => _itemsIndex[item])
+                .Select(columnHead => _items.RemoveNode(columnHead))
+                .ToList()
+                .ForEach(stack.Push);
+
+            return stack;
+
+            //option.Items.Aggregate(new Stack<DoublyLinkedListNode<DoublyLinkedListOfItems>>(),
+            //    (stack, item) =>
+            //    {
+            //        var head = _itemsIndex[item];
+            //        _items.RemoveNode(head);
+            //        stack.Push(head);
+            //        return stack;
+            //    });
         }
     }
 }

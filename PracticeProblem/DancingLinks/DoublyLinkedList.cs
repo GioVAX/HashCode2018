@@ -32,7 +32,12 @@ namespace DancingLinks
                 AddValue(value);
         }
 
-        public void AddValue(T value) => AppendNode(new DoublyLinkedListNode<T>(value));
+        public DoublyLinkedListNode<T> AddValue(T value)
+        {
+            var node = new DoublyLinkedListNode<T>(value);
+            AppendNode(node);
+            return node;
+        }
 
         public void AppendNode(DoublyLinkedListNode<T> newNode)
         {
@@ -59,12 +64,14 @@ namespace DancingLinks
                 node.Insert();
         }
 
-        public void RemoveNode(DoublyLinkedListNode<T> node)
+        public DoublyLinkedListNode<T> RemoveNode(DoublyLinkedListNode<T> node)
         {
             if (node.Next == node)
                 First = Last = null;
             else
                 node.Remove();
+
+            return node;
         }
     }
 

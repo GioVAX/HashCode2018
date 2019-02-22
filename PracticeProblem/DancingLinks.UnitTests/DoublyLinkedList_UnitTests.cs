@@ -10,6 +10,17 @@ namespace DancingLinks.UnitTests
         public DoublyLinkedList_UnitTests()
             : base(new DoublyLinkedList<int>())
         { }
+        
+        [Theory, AutoData]
+        public void AddingOneValue_ShouldReturnTheNewlyInsertedNode(int aValue)
+        {
+            var node = Sut.AddValue(aValue);
+
+            node.Should().Be(Sut.First);
+            node.Should().Be(Sut.Last);
+            node.Next.Should().Be(node);
+            node.Previous.Should().Be(node);
+        }
 
         [Fact]
         public void AddingTwoValues_ShouldHaveDifferentFirstAndLastNode()
@@ -103,6 +114,18 @@ namespace DancingLinks.UnitTests
                 .Should().Be(values[0]);
             Sut.Last.Value
                 .Should().Be(values[2]);
+        }
+
+        
+        [Fact]
+        public void RemoveNode_ShouldReturnTheRemovedNode()
+        {
+            InitWithNValues(3);
+
+            var node = Sut.First.Next;
+
+            Sut.RemoveNode(node).Should()
+                .BeSameAs(node);
         }
 
         [Fact]

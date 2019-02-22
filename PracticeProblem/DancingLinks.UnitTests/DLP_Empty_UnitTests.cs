@@ -6,17 +6,17 @@ using Xunit;
 
 namespace DancingLinks.UnitTests
 {
-    public class DancingLinksPlatformUnitTests
+    public class DLP_Empty_UnitTests
     {
         private readonly DancingLinksPlatform<int> _sut;
 
-        public DancingLinksPlatformUnitTests() => _sut = new DancingLinksPlatform<int>();
+        public DLP_Empty_UnitTests() => _sut = new DancingLinksPlatform<int>();
 
         [Fact]
         public void EmptyPlatform_ShouldHaveEmptyOptions() => _sut.Options.Should().BeEmpty();
 
         [Fact]
-        public void EmptyPlatform_ShouldHaveEmptyItems() => _sut.Items.Should().BeEmpty();
+        public void EmptyPlatform_ShouldHaveEmptyItems() => _sut.ItemsCount.Should().Be(0);
 
         [Theory, AutoData]
         public void WhenOneOptionIsAdded_ShouldHaveCorrectOption(TestOption option)
@@ -35,9 +35,8 @@ namespace DancingLinks.UnitTests
             _sut.AddOption(option);
             var expectedItems = option.Items.ToList();
 
-            _sut.Items
-                .Should().HaveCount(expectedItems.Count)
-                .And.ContainInOrder(expectedItems);
+            _sut.ItemsCount
+                .Should().Be(expectedItems.Count);
         }
 
         [Theory, AutoData]
@@ -51,26 +50,14 @@ namespace DancingLinks.UnitTests
         }
 
         [Theory, AutoData]
-        public void WhenTwoOptionsAreAdded_ShouldHaveAllTheItemsOfAllTheOptions(List<TestOption> options)
+        public void WhenTwoOptionsAreAdded_ShouldHaveAllTheItemsOfAllTheOptionsWithNoDuplicates(List<TestOption> options)
         {
             options.ForEach(_sut.AddOption);
 
             var expectedItems = options.SelectMany(option => option.Items).Distinct().ToList();
 
-            _sut.Items
-                .Should().HaveCount(expectedItems.Count)
-                .And.BeEquivalentTo(expectedItems);
-        }
-
-        [Theory, AutoData]
-        public void WhenTwoOptionsAreAdded_ShouldNotContainDuplicatedItems(List<TestOption> options)
-        {
-            options.ForEach(_sut.AddOption);
-
-            _sut.AddOption(options[0]);
-
-            _sut.Items
-                .Should().OnlyHaveUniqueItems();
+            _sut.ItemsCount
+                .Should().Be(expectedItems.Count);
         }
     }
 }
