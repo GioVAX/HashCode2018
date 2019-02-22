@@ -28,9 +28,7 @@ namespace DancingLinks
                 .ForEach(item =>
                 {
                     if (!_itemsIndex.ContainsKey(item))
-                    {
                         _itemsIndex[item] = _items.AddValue(new DoublyLinkedList<IDlOption<TItem>>());
-                    }
 
                     _itemsIndex[item].Value.AddValue(option);
                 });
@@ -47,15 +45,6 @@ namespace DancingLinks
                 .ForEach(stack.Push);
 
             return new CoverResult<TItem>(option, stack);
-
-            //option.Items.Aggregate(new Stack<DoublyLinkedListNode<DoublyLinkedListOfItems>>(),
-            //    (stack, item) =>
-            //    {
-            //        var head = _itemsIndex[item];
-            //        _items.RemoveNode(head);
-            //        stack.Push(head);
-            //        return stack;
-            //    });
         }
     }
 }
