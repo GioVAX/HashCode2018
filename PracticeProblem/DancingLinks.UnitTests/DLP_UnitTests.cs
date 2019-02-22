@@ -72,5 +72,40 @@ namespace DancingLinks.UnitTests
             covered.Option
                 .Should().Be(_options[2]);
         }
+
+        [Fact]
+        public void CoverOptionWithOverlaps_ShouldReturnTheItemsFromTheCoveredOption()
+        {
+            var result = _sut.Cover(_options[0]);
+
+            result.Stack
+                .Should().HaveCount(3);
+        }
+
+        [Fact]
+        public void CoverOptionWithOverlaps_ShouldReturnTheAdditionalOptionsRemoved()
+        {
+            var otherOptions = _sut.Cover(_options[0])
+                .OtherOptions.ToList();
+
+            otherOptions
+                .Should().HaveCount(1);
+
+            otherOptions[0]
+                .Should().BeSameAs(_options[1]);
+        }
+
+        [Fact]
+        public void FindOverlappingOptions_UniqueOption_ShouldReturnOnlyTheOption()
+        {
+            var options = _sut.FindOverlappingOptions(_options[2])
+                .ToList();
+
+            options
+                .Should().HaveCount(1);
+
+            options[0]
+                .Should().BeSameAs(_options[2]);
+        }
     }
 }

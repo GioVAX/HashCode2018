@@ -38,13 +38,29 @@ namespace DancingLinks
         {
             var stack = new Stack<DoublyLinkedListNode<DoublyLinkedList<IDlOption<TItem>>>>();
 
-            option.Items
-                .Select(item => _itemsIndex[item])
+            var heads = GetOptionColumns(option)
                 .Select(columnHead => _items.RemoveNode(columnHead))
-                .ToList()
-                .ForEach(stack.Push);
+                .ToList();
 
-            return new CoverResult<TItem>(option, stack);
+            var options = FindOverlappingOptions(heads.Select(head => head.Value))
+                .Where(opt => opt != option);
+
+            heads.ForEach(stack.Push);
+
+            return new CoverResult<TItem>(option, stack, options);
         }
+
+        private IEnumerable<DoublyLinkedListNode<DoublyLinkedList<IDlOption<TItem>>>> GetOptionColumns(IDlOption<TItem> option) =>
+            option.Items
+                .Select(item => _itemsIndex[item]);
+
+        public IEnumerable<IDlOption<TItem>> FindOverlappingOptions(IDlOption<TItem> option) =>
+            FindOverlappingOptions(GetOptionColumns(option).Select(head => head.Value));
+
+        private static IEnumerable<IDlOption<TItem>> FindOverlappingOptions(
+            IEnumerable<DoublyLinkedList<IDlOption<TItem>>> columns) =>
+            columns
+                .SelectMany(list => list.Values)
+                .Distinct();
     }
 }
