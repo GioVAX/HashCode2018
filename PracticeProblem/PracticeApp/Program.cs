@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace PracticeApp
 {
-    static class Program
+    public static class Program
     {
         static void Main(string[] args)
         {
@@ -15,7 +16,7 @@ namespace PracticeApp
             }
 
             var inputFile = Path.GetFullPath(args[0]);
-            Console.WriteLine($"Processing file {inputFile}");
+            //Console.WriteLine($"Processing file {inputFile}");
 
             PizzaDescription pizza;
             using (var reader = new StreamReader(File.Open(inputFile, FileMode.Open)))
@@ -24,8 +25,13 @@ namespace PracticeApp
             }
 
             var slices = PizzaSlicer.Slice(pizza).ToList();
-            var size = slices.Sum(s => s.Size);
 
+            Console.WriteLine(FormatOutput(slices));
         }
+
+        public static string FormatOutput(List<Slice> slices) => 
+            string.Join('\n',
+                slices.Select(sl => $"{sl.TopRow} {sl.LeftCol} {sl.BottomRight.Y} {sl.BottomRight.X}")
+                    .Prepend($"{slices.Count}"));
     }
 }
