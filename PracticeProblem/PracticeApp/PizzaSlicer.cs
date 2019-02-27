@@ -21,13 +21,22 @@ namespace PracticeApp
         {
             var possibleSlices = CreateSliceDistribution(pizza.Width, pizza.Height, pizza.ValidSlices);
 
-            // Small slices first
-            return SortedApproach(possibleSlices, pizza.Width, ls => ls.OrderBy(s => s.Size).ToList());
-
             // Greedy approach
-            //return SortedApproach(possibleSlices, pizza.Width, ls => ls.OrderByDescending(s => s.Size).ToList());
-        }
+            var greedy = SortedApproach(possibleSlices, pizza.Width, ls => ls.OrderByDescending(s => s.Size).ToList())
+                .ToList();
 
+            var cover = greedy.Sum(slice => slice.Size);
+            if (cover == pizza.Width * pizza.Height)
+                return greedy;
+
+            // Small slices first
+            var unGreedy = SortedApproach(possibleSlices, pizza.Width, ls => ls.OrderBy(s => s.Size).ToList())
+                .ToList();
+
+            var cover2 = unGreedy.Sum(slice => slice.Size);
+
+            return cover > cover2 ? greedy : unGreedy;
+        }
 
         public static IEnumerable<Slice> SortedApproach(List<Slice>[] possibleSlices, int width, Func<List<Slice>, List<Slice>> sorter)
         {

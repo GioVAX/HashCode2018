@@ -25,11 +25,10 @@ namespace PracticeApp
             }
 
             var slices = PizzaSlicer.Slice(pizza).ToList();
-
             Console.WriteLine(FormatOutput(slices));
         }
 
-        public static string FormatOutput(List<Slice> slices) => 
+        public static string FormatOutput(List<Slice> slices) =>
             string.Join('\n',
                 slices.Select(sl => $"{sl.TopRow} {sl.LeftCol} {sl.BottomRight.Y} {sl.BottomRight.X}")
                     .Prepend($"{slices.Count}"));
