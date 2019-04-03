@@ -24,7 +24,7 @@ namespace PracticeApp
 
         private Slice[,] _slices;
 
-        public int Solve()
+        public IEnumerable<Slice> Solve()
         {
             var slices = _pizza.ValidSlices
                 .Select(sl => new Slice(new Point(sl.LeftCol + 1, sl.TopRow + 1), new Size(sl.Width, sl.Height)))
@@ -32,7 +32,27 @@ namespace PracticeApp
 
             BuildSolutionSpace(slices);
 
-            return SolutionSpace[_pizza.Height, _pizza.Width];
+            return SlicesInOptimalSolution();
+        }
+
+        private IEnumerable<Slice> SlicesInOptimalSolution()
+        {
+            var nextPoints = new Stack<Point>();
+            nextPoints.Push(new Point(_pizza.Width, _pizza.Height));
+
+            while (nextPoints.Count > 0)
+            {
+                var point = nextPoints.Pop();
+                var slice = _slices[point.Y, point.X];
+                
+                if (slice == null)
+                    continue;
+
+                nextPoints.Push(new Point(point.X, slice.TopRow - 1));
+                nextPoints.Push(new Point(slice.LeftCol - 1, point.Y));
+
+                yield return slice;
+            }
         }
 
         private void BuildSolutionSpace(List<Slice> slices)
