@@ -48,14 +48,12 @@ namespace DancingLinks
         {
             _options.AddLast(option);
 
-            foreach (var item in option.Items.Select(i => new ItemHeader(i)))
-            {
-                var x = _items.Find(item);
-                if (x == null)
-                    x = _AddItem(item.Value);
+            var relatedItems = option.Items
+                .Select(i => new ItemHeader(i))
+                .Select(ih => _items.Find(ih) ?? _AddItem(ih.Value));
 
-                x.Value.Options.AddLast(option);
-            }
+            foreach (var item in relatedItems)
+                item.Value.Options.AddLast(option);
         }
 
         private LinkedListNode<ItemHeader> _AddItem(TItem item) => _items.AddLast(new ItemHeader(item));

@@ -9,32 +9,32 @@ namespace DancingLinks.UnitTests
 {
     public class DLP_UnitTests
     {
-        //private readonly DancingLinksPlatform<int> _sut;
-        //private List<TestOption> _options;
+        private readonly DancingLinksPlatform<int> _sut;
+        private List<TestOption> _options;
 
-        //public DLP_UnitTests()
-        //{
-        //    _sut = new DancingLinksPlatform<int>();
-        //    _options = new List<TestOption>
-        //    {
-        //        new TestOption(new[] { 1, 2, 3 }),
-        //        new TestOption(new[] { 1, 4, 5 }),
-        //        new TestOption(new[] { 6, 7, 8 })
-        //    };
+        public DLP_UnitTests()
+        {
+            _sut = new DancingLinksPlatform<int>();
+            _options = new List<TestOption>
+            {
+                new TestOption(new[] { 1, 2, 3 }),
+                new TestOption(new[] { 1, 4, 5 }),
+                new TestOption(new[] { 6, 7, 8 })
+            };
 
-        //    _options.ForEach(_sut.AddOption);
-        //}
+            _options.ForEach(_sut.AddOption);
+        }
 
-        //[Fact]
-        //public void Sut_ShouldBeCorrect()
-        //{
-        //    _sut.Options.Should()
-        //        .HaveCount(_options.Count).And
-        //        .ContainInOrder(_options);
+        [Fact]
+        public void Sut_ShouldBeCorrect()
+        {
+            _sut.Options.Should()
+                .HaveCount(_options.Count).And
+                .ContainInOrder(_options);
 
-        //    _sut.ItemsCount.Should()
-        //        .Be(8);
-        //}
+            _sut.Items.Should()
+                .HaveCount(8);
+        }
 
         //[Fact(Skip = "I am not sure this functionality is necessary")]
         //public void CoverUniqueOption_ShouldLeave2Options()
@@ -108,4 +108,4 @@ namespace DancingLinks.UnitTests
         //        .Should().BeSameAs(_options[2]);
         //}
     }
-}
+    }

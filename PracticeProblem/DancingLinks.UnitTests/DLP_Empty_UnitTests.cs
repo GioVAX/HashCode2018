@@ -60,25 +60,46 @@ namespace DancingLinks.UnitTests
         }
 
 
-        //[Theory, AutoData]
-        //public void WhenTwoOptionsAreAdded_ShouldHaveTwoOptionsInTheRightOrder(List<TestOption> options)
-        //{
-        //    options.ForEach(_sut.AddOption);
+        [Theory, AutoData]
+        public void WhenTwoOptionsAreAdded_ShouldHaveTwoOptionsInTheRightOrder(List<TestOption> options)
+        {
+            options.ForEach(_sut.AddOption);
 
-        //    _sut.Options
-        //        .Should().HaveCount(options.Count)
-        //        .And.ContainInOrder(options);
-        //}
+            _sut.Options
+                .Should().HaveCount(options.Count)
+                .And.ContainInOrder(options);
+        }
 
-        //[Theory, AutoData]
-        //public void WhenTwoOptionsAreAdded_ShouldHaveAllTheItemsOfAllTheOptionsWithNoDuplicates(List<TestOption> options)
-        //{
-        //    options.ForEach(_sut.AddOption);
+        [Theory, AutoData]
+        public void WhenTwoOptionsAreAdded_ShouldHaveAllTheItemsOfAllTheOptionsWithNoDuplicates(List<TestOption> options)
+        {
+            options.ForEach(_sut.AddOption);
 
-        //    var expectedItems = options.SelectMany(option => option.Items).Distinct().ToList();
+            var expectedItems = options.SelectMany(option => option.Items).Distinct().ToList();
 
-        //    _sut.ItemsCount
-        //        .Should().Be(expectedItems.Count);
-        //}
+            _sut.Items
+                .Should().HaveCount(expectedItems.Count);
+        }
+
+        [Fact]
+        public void WhenTwoOptionsWithOverlappingItemsAreAdded_ShouldHaveAllTheItemsOfAllTheOptionsWithNoDuplicates()
+        {
+            _sut.AddOption(new TestOption(new[] { 1, 2, 3 }));
+            _sut.AddOption(new TestOption(new[] { 1, 4, 5 }));
+
+            _sut.Items
+                .Should().BeEquivalentTo(new[] { 1, 2, 3, 4, 5 });
+        }
+
+        [Fact]
+        public void WhenExistingItemsAndOneOptionIsAdded_ShouldHaveItemsFromExistingAndOptionsWithNoDuplicates()
+        {
+            _sut.AddItem(1);
+            _sut.AddItem(5);
+            _sut.AddOption(new TestOption(new[] { 1, 4, 5 }));
+
+            _sut.Items
+                .Should().BeEquivalentTo(new[] { 1, 4, 5 });
+        }
     }
 }
