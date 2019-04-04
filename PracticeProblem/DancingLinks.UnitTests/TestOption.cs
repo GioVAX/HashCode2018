@@ -10,5 +10,10 @@ namespace DancingLinks.UnitTests
         }
 
         public IEnumerable<int> Items { get; }
+
+        public int CompareTo(object obj)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

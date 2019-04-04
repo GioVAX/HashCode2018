@@ -27,29 +27,29 @@ namespace PracticeAppUnitTests
             _sut.MaxSlice.Should().Be(14);
 
             _sut.Ingredients.Should()
-                .HaveCount( 1000000);
+                .HaveCount(1000000);
         }
 
-        [Fact]
-        public void ShouldGenerateAllPossibleSlices()
-        {
-            _sut.AllSlices.Should()
-                .NotBeNull()
-                .And.AllBeAssignableTo<Slice>()
-                .And.OnlyHaveUniqueItems()
-                .And.HaveCount(12 * _sut.Width * _sut.Height);
-        }
+        //[Fact]
+        //public void ShouldGenerateAllPossibleSlices()
+        //{
+        //    _sut.AllSlices.Should()
+        //        .NotBeNull()
+        //        .And.AllBeAssignableTo<Slice>()
+        //        .And.OnlyHaveUniqueItems()
+        //        .And.HaveCount(12 * _sut.Width * _sut.Height);
+        //}
 
-        [Fact]
-        public void ShouldListValidSlices()
-        {
-            var actual = _sut.ValidSlices;
+        //[Fact]
+        //public void ShouldListValidSlices()
+        //{
+        //    var actual = _sut.ValidSlices;
 
-            actual.Should()
-                .NotBeNull()
-                .And.AllBeAssignableTo<Slice>()
-                .And.OnlyHaveUniqueItems()
-                .And.HaveCount(4454943);
-        }
+        //    actual.Should()
+        //        .NotBeNull()
+        //        .And.AllBeAssignableTo<Slice>()
+        //        .And.OnlyHaveUniqueItems()
+        //        .And.HaveCount(4454943);
+        //}
     }
 }

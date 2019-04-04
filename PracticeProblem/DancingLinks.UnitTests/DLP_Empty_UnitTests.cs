@@ -13,10 +13,30 @@ namespace DancingLinks.UnitTests
         public DLP_Empty_UnitTests() => _sut = new DancingLinksPlatform<int>();
 
         [Fact]
-        public void EmptyPlatform_ShouldHaveEmptyOptions() => _sut.Options.Should().BeEmpty();
+        public void EmptyPlatform_ShouldHaveNoOptions() => _sut.Options.Should().BeEmpty();
 
         [Fact]
-        public void EmptyPlatform_ShouldHaveEmptyItems() => _sut.ItemsCount.Should().Be(0);
+        public void EmptyPlatform_ShouldHaveNoItems() => _sut.Items.Should().BeEmpty();
+
+        [Theory, AutoData]
+        public void WhenOneItemIsAdded_ShouldHaveCorrectItems(int item)
+        {
+            _sut.AddItem(item);
+
+            _sut.Items
+                .Should().HaveCount(1)
+                .And.Subject.First()
+                    .Should().Be(item);
+        }
+
+        [Theory, AutoData]
+        public void WhenMultipleItemsAreAdded_ShouldHaveCorrectItems(List<int> items)
+        {
+            items.ForEach(_sut.AddItem);
+
+            _sut.Items
+                .Should().HaveCount(items.Count);
+        }
 
         [Theory, AutoData]
         public void WhenOneOptionIsAdded_ShouldHaveCorrectOption(TestOption option)
@@ -30,34 +50,35 @@ namespace DancingLinks.UnitTests
         }
 
         [Theory, AutoData]
-        public void WhenOneOptionIsAdded_ShouldHaveCorrectItems(TestOption option)
+        public void WhenOneOptionIsAdded_ShouldBeAddedToRelevantItems(TestOption option)
         {
             _sut.AddOption(option);
-            var expectedItems = option.Items.ToList();
 
-            _sut.ItemsCount
-                .Should().Be(expectedItems.Count);
+            _sut.Items
+                .Where(item => option.Items.Contains(item))
+                .Should().HaveCount(option.Items.Count());
         }
 
-        [Theory, AutoData]
-        public void WhenTwoOptionsAreAdded_ShouldHaveTwoOptionsInTheRightOrder(List<TestOption> options)
-        {
-            options.ForEach(_sut.AddOption);
 
-            _sut.Options
-                .Should().HaveCount(options.Count)
-                .And.ContainInOrder(options);
-        }
+        //[Theory, AutoData]
+        //public void WhenTwoOptionsAreAdded_ShouldHaveTwoOptionsInTheRightOrder(List<TestOption> options)
+        //{
+        //    options.ForEach(_sut.AddOption);
 
-        [Theory, AutoData]
-        public void WhenTwoOptionsAreAdded_ShouldHaveAllTheItemsOfAllTheOptionsWithNoDuplicates(List<TestOption> options)
-        {
-            options.ForEach(_sut.AddOption);
+        //    _sut.Options
+        //        .Should().HaveCount(options.Count)
+        //        .And.ContainInOrder(options);
+        //}
 
-            var expectedItems = options.SelectMany(option => option.Items).Distinct().ToList();
+        //[Theory, AutoData]
+        //public void WhenTwoOptionsAreAdded_ShouldHaveAllTheItemsOfAllTheOptionsWithNoDuplicates(List<TestOption> options)
+        //{
+        //    options.ForEach(_sut.AddOption);
 
-            _sut.ItemsCount
-                .Should().Be(expectedItems.Count);
-        }
+        //    var expectedItems = options.SelectMany(option => option.Items).Distinct().ToList();
+
+        //    _sut.ItemsCount
+        //        .Should().Be(expectedItems.Count);
+        //}
     }
 }

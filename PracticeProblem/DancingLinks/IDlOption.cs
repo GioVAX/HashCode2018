@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DancingLinks
 {
-    public interface IDlOption<out T>
+    public interface IDlOption<out T> : IComparable
     {
         IEnumerable<T> Items { get; }
     }
