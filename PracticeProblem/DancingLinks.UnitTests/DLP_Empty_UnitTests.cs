@@ -37,7 +37,7 @@ namespace DancingLinks.UnitTests
         }
 
         [Theory, AutoData]
-        public void WhenOneOptionIsAdded_ShouldHaveCorrectOption(TestOption option)
+        public void WhenOneOptionIsAdded_ShouldHaveCorrectOption(TestOption<int> option)
         {
             _sut.AddOption(option);
 
@@ -46,7 +46,7 @@ namespace DancingLinks.UnitTests
         }
 
         [Theory, AutoData]
-        public void WhenOneOptionIsAdded_ShouldBeAddedToRelevantItems(TestOption option)
+        public void WhenOneOptionIsAdded_ShouldBeAddedToRelevantItems(TestOption<int> option)
         {
             _sut.AddOption(option);
 
@@ -57,7 +57,7 @@ namespace DancingLinks.UnitTests
 
 
         [Theory, AutoData]
-        public void WhenTwoOptionsAreAdded_ShouldHaveTwoOptionsInTheRightOrder(List<TestOption> options)
+        public void WhenTwoOptionsAreAdded_ShouldHaveTwoOptionsInTheRightOrder(List<TestOption<int>> options)
         {
             options.ForEach(_sut.AddOption);
 
@@ -66,7 +66,7 @@ namespace DancingLinks.UnitTests
         }
 
         [Theory, AutoData]
-        public void WhenTwoOptionsAreAdded_ShouldHaveAllTheItemsOfAllTheOptionsWithNoDuplicates(List<TestOption> options)
+        public void WhenTwoOptionsAreAdded_ShouldHaveAllTheItemsOfAllTheOptionsWithNoDuplicates(List<TestOption<int>> options)
         {
             options.ForEach(_sut.AddOption);
 
@@ -79,8 +79,8 @@ namespace DancingLinks.UnitTests
         [Fact]
         public void WhenTwoOptionsWithOverlappingItemsAreAdded_ShouldHaveAllTheItemsOfAllTheOptionsWithNoDuplicates()
         {
-            _sut.AddOption(new TestOption(new[] { 1, 2, 3 }));
-            _sut.AddOption(new TestOption(new[] { 1, 4, 5 }));
+            _sut.AddOption(new TestOption<int>(new[] { 1, 2, 3 }));
+            _sut.AddOption(new TestOption<int>(new[] { 1, 4, 5 }));
 
             _sut.Items
                 .Should().BeEquivalentTo(1, 2, 3, 4, 5);
@@ -91,7 +91,7 @@ namespace DancingLinks.UnitTests
         {
             _sut.AddItem(1);
             _sut.AddItem(5);
-            _sut.AddOption(new TestOption(new[] { 1, 4, 5 }));
+            _sut.AddOption(new TestOption<int>(new[] { 1, 4, 5 }));
 
             _sut.Items
                 .Should().BeEquivalentTo(1, 4, 5);

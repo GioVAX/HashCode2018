@@ -8,16 +8,16 @@ namespace DancingLinks.UnitTests
     public class DLP_UnitTests
     {
         private readonly DancingLinksPlatform<int> _sut;
-        private readonly List<TestOption> _options;
+        private readonly List<TestOption<int>> _options;
 
         public DLP_UnitTests()
         {
             _sut = new DancingLinksPlatform<int>();
-            _options = new List<TestOption>
+            _options = new List<TestOption<int>>
             {
-                new TestOption(new[] { 1, 2, 3 }),
-                new TestOption(new[] { 1, 4, 5 }),
-                new TestOption(new[] { 6, 7, 8 })
+                new TestOption<int>(new[] { 1, 2, 3 }),
+                new TestOption<int>(new[] { 1, 4, 5 }),
+                new TestOption<int>(new[] { 6, 7, 8 })
             };
 
             _options.ForEach(_sut.AddOption);
