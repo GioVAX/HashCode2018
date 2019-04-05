@@ -4,36 +4,10 @@ using System.Linq;
 
 namespace DancingLinks
 {
-    public class DancingLinksPlatform<TItem> where TItem : IComparable
+    public partial class DancingLinksPlatform<TItem> where TItem : IComparable
     {
-
-        private class ItemHeader
-        {
-            public TItem Value;
-            public LinkedList<IDlOption<TItem>> Options;
-
-            public ItemHeader(TItem value)
-            {
-                Value = value;
-                Options = new LinkedList<IDlOption<TItem>>();
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (!(obj is ItemHeader other))
-                    return false;
-
-                return Value.Equals(other.Value);
-            }
-
-            public override int GetHashCode()
-            {
-                return HashCode.Combine(Value, Options);
-            }
-        }
-
         private readonly LinkedList<IDlOption<TItem>> _options;
-        private readonly LinkedList<ItemHeader> _items;
+        private readonly LinkedList<ItemHeader<TItem>> _items;
 
         public IEnumerable<IDlOption<TItem>> Options => _options as IReadOnlyCollection<IDlOption<TItem>>;
         public IEnumerable<TItem> Items => _items.Select(hdr => hdr.Value);
@@ -41,7 +15,7 @@ namespace DancingLinks
         public DancingLinksPlatform()
         {
             _options = new LinkedList<IDlOption<TItem>>();
-            _items = new LinkedList<ItemHeader>();
+            _items = new LinkedList<ItemHeader<TItem>>();
         }
 
         public void AddOption(IDlOption<TItem> option)
@@ -54,9 +28,9 @@ namespace DancingLinks
                 item.Value.Options.AddLast(option);
         }
 
-        private IEnumerable<LinkedListNode<ItemHeader>> GetItemHeaders(IDlOption<TItem> option, bool createIfMissing = false) =>
+        private IEnumerable<LinkedListNode<ItemHeader<TItem>>> GetItemHeaders(IDlOption<TItem> option, bool createIfMissing = false) =>
             option.Items
-                .Select(i => new ItemHeader(i))
+                .Select(i => new ItemHeader<TItem>(i))
                 .Select(ih => createIfMissing ? _items.Find(ih) ?? _AddItem(ih.Value) : _items.Find(ih));
 
         public void Cover(IDlOption<TItem> option)
@@ -75,7 +49,7 @@ namespace DancingLinks
             }
         }
 
-        private LinkedListNode<ItemHeader> _AddItem(TItem item) => _items.AddLast(new ItemHeader(item));
+        private LinkedListNode<ItemHeader<TItem>> _AddItem(TItem item) => _items.AddLast(new ItemHeader<TItem>(item));
 
         public void AddItem(TItem item) => _AddItem(item);
     }
