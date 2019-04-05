@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace DancingLinks
 {
-    public partial class DancingLinksPlatform<TItem> where TItem : IComparable
+    public class DancingLinksPlatform<TItem> where TItem : IComparable
     {
         private readonly LinkedList<IDlOption<TItem>> _options;
         private readonly LinkedList<ItemHeader<TItem>> _items;

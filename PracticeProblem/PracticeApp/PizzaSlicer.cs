@@ -28,8 +28,7 @@ namespace PracticeApp
             //return SortedApproach(possibleSlices, pizza.Width, ls => ls.OrderByDescending(s => s.Size).ToList());
         }
 
-
-        public static IEnumerable<Slice> SortedApproach(List<Slice>[] possibleSlices, int width, Func<List<Slice>, List<Slice>> sorter)
+        private static IEnumerable<Slice> SortedApproach(IEnumerable<List<Slice>> possibleSlices, int width, Func<List<Slice>, List<Slice>> sorter)
         {
             var sortedPossibleSlices = possibleSlices
                 .Select(ls => ls == null ? new List<Slice>() : sorter(ls))
@@ -37,7 +36,7 @@ namespace PracticeApp
 
             foreach (var slices in sortedPossibleSlices)
             {
-                if ((slices?.Count() ?? 0) == 0)
+                if ((slices?.Count ?? 0) == 0)
                     continue;
 
                 var maxSlice = slices.First();
