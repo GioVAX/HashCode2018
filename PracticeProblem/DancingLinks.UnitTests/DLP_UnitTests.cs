@@ -96,20 +96,18 @@ namespace DancingLinks.UnitTests
 
         #region Uncover Tests
 
-        [Fact]
-        public void UncoverUniqueItem_WillRestoreInitialStatus()
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(4)]
+        [InlineData(5)]
+        [InlineData(8)]
+        [InlineData(3)]
+        [InlineData(11)]
+        public void UncoverUniqueItem_WillRestoreInitialStatus(int idx)
         {
-            var coverResult = _sut.Cover(_options[2]);
-
-            _sut.Uncover(coverResult);
-
-            Sut_ShouldBeCorrect();
-        }
-
-        [Fact]
-        public void UncoverOverlappingItem_WillRestoreInitialStatus()
-        {
-            var coverResult = _sut.Cover(_options[1]);
+            var coverResult = _sut.Cover(_options[idx % 3]);
 
             _sut.Uncover(coverResult);
 

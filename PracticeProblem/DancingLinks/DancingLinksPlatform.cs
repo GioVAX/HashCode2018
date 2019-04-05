@@ -9,7 +9,7 @@ namespace DancingLinks
         private readonly LinkedList<IDlOption<TItem>> _options;
         private readonly LinkedList<ItemHeader<TItem>> _items;
 
-        public IEnumerable<IDlOption<TItem>> Options => _options as IReadOnlyCollection<IDlOption<TItem>>;
+        public IEnumerable<IDlOption<TItem>> Options => _options.AsEnumerable();
         public IEnumerable<TItem> Items => _items.Select(hdr => hdr.Item);
         public IEnumerable<ItemHeader<TItem>> ItemHeaders => _items.AsEnumerable();
 
