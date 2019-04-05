@@ -8,7 +8,7 @@ namespace DancingLinks.UnitTests
     public class DLP_UnitTests
     {
         private readonly DancingLinksPlatform<int> _sut;
-        private List<TestOption> _options;
+        private readonly List<TestOption> _options;
 
         public DLP_UnitTests()
         {
@@ -27,35 +27,33 @@ namespace DancingLinks.UnitTests
         public void Sut_ShouldBeCorrect()
         {
             _sut.Options.Should()
-                .HaveCount(_options.Count).And
-                .ContainInOrder(_options);
+                .BeEquivalentTo(_options);
 
             _sut.Items.Should()
-                .HaveCount(8);
+                .BeEquivalentTo(1, 2, 3, 4, 5, 6, 7, 8 );
         }
 
         [Fact]
-        public void CoverUniqueOption_ShouldLeave2Options()
+        public void CoverUniqueOption_ShouldKeep2Options()
         {
             _sut.Cover(_options[2]);
 
             _sut.Options.Should()
                 .HaveCount(2).And
                 .NotContain(_options[2]);
-
         }
 
         [Fact]
-        public void CoverUniqueOption_ShouldLeave5Items()
+        public void CoverUniqueOption_ShouldKeep5Items()
         {
             _sut.Cover(_options[2]);
 
             _sut.Items
-                .Should().BeEquivalentTo(new[] {1, 2, 3, 4, 5});
+                .Should().BeEquivalentTo(1, 2, 3, 4, 5 );
         }
 
         [Fact]
-        public void CoverUniqueOption_ShouldReturnRemovedItems()
+        public void CoverUniqueOption_ShouldRemoveTheItem()
         {
             var result = _sut.Cover(_options[2]);
 
@@ -64,7 +62,7 @@ namespace DancingLinks.UnitTests
         }
 
         [Fact]
-        public void CoverUniqueOption_ShouldReturnCoveredOption()
+        public void CoverUniqueOption_ShouldRemoveTheCoveredOption()
         {
             var covered = _sut.Cover(_options[2]);
 
@@ -72,27 +70,23 @@ namespace DancingLinks.UnitTests
                 .Should().BeEquivalentTo(_options[2]);
         }
 
-        //[Fact]
-        //public void CoverOptionWithOverlaps_ShouldReturnTheItemsFromTheCoveredOption()
-        //{
-        //    var result = _sut.Cover(_options[0]);
+        [Fact]
+        public void CoverOptionWithOverlaps_ShouldRemoveTheItemsFromTheCoveredOption()
+        {
+            var result = _sut.Cover(_options[0]);
 
-        //    result.Stack
-        //        .Should().HaveCount(3);
-        //}
+            result.Items.Should()
+                .BeEquivalentTo(1, 2, 3 );
+        }
 
-        //[Fact]
-        //public void CoverOptionWithOverlaps_ShouldReturnTheAdditionalOptionsRemoved()
-        //{
-        //    var otherOptions = _sut.Cover(_options[0])
-        //        .OtherOptions.ToList();
+        [Fact]
+        public void CoverOptionWithOverlaps_ShouldRemoveTheOverlappingOptions()
+        {
+            var coverResult = _sut.Cover(_options[0]);
 
-        //    otherOptions
-        //        .Should().HaveCount(1);
-
-        //    otherOptions[0]
-        //        .Should().BeSameAs(_options[1]);
-        //}
+            coverResult.Options.Should()
+                .BeEquivalentTo(_options[0], _options[1]);
+        }
 
         //[Fact]
         //public void FindOverlappingOptions_UniqueOption_ShouldReturnOnlyTheOption()
@@ -107,4 +101,4 @@ namespace DancingLinks.UnitTests
         //        .Should().BeSameAs(_options[2]);
         //}
     }
-    }
+}
