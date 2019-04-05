@@ -36,32 +36,33 @@ namespace DancingLinks.UnitTests
                 .HaveCount(8);
         }
 
-        //[Fact(Skip = "I am not sure this functionality is necessary")]
-        //public void CoverUniqueOption_ShouldLeave2Options()
-        //{
-        //    _sut.Cover(_options[2]);
+        [Fact]
+        public void CoverUniqueOption_ShouldLeave2Options()
+        {
+            _sut.Cover(_options[2]);
 
-        //    _sut.Options.Should()
-        //        .HaveCount(2).And
-        //        .NotContain(_options[2]);
-        //}
+            _sut.Options.Should()
+                .HaveCount(2).And
+                .NotContain(_options[2]);
 
-        //[Fact]
-        //public void CoverUniqueOption_ShouldLeave5Items()
-        //{
-        //    _sut.Cover(_options[2]);
+        }
 
-        //    _sut.ItemsCount.Should()
-        //        .Be(5);
-        //}
+        [Fact]
+        public void CoverUniqueOption_ShouldLeave5Items()
+        {
+            _sut.Cover(_options[2]);
+
+            _sut.Items
+                .Should().BeEquivalentTo(new[] {1, 2, 3, 4, 5});
+        }
 
         //[Fact]
         //public void CoverUniqueOption_ShouldReturnRemovedItems()
         //{
-        //    var result = _sut.Cover(_options[2]);
+            //var result = _sut.Cover(_options[2]);
 
-        //    result.Stack
-        //        .Should().HaveCount(_options[2].Items.Count());
+            //result.Stack
+            //    .Should().HaveCount(_options[2].Items.Count());
         //}
 
         //[Fact]
