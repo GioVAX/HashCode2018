@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using FluentAssertions;
 using Xunit;
 
@@ -56,23 +54,23 @@ namespace DancingLinks.UnitTests
                 .Should().BeEquivalentTo(new[] {1, 2, 3, 4, 5});
         }
 
-        //[Fact]
-        //public void CoverUniqueOption_ShouldReturnRemovedItems()
-        //{
-            //var result = _sut.Cover(_options[2]);
+        [Fact]
+        public void CoverUniqueOption_ShouldReturnRemovedItems()
+        {
+            var result = _sut.Cover(_options[2]);
 
-            //result.Stack
-            //    .Should().HaveCount(_options[2].Items.Count());
-        //}
+            result.Items
+                .Should().BeEquivalentTo(_options[2].Items);
+        }
 
-        //[Fact]
-        //public void CoverUniqueOption_ShouldReturnCoveredOption()
-        //{
-        //    var covered = _sut.Cover(_options[2]);
+        [Fact]
+        public void CoverUniqueOption_ShouldReturnCoveredOption()
+        {
+            var covered = _sut.Cover(_options[2]);
 
-        //    covered.Option
-        //        .Should().Be(_options[2]);
-        //}
+            covered.Options
+                .Should().BeEquivalentTo(_options[2]);
+        }
 
         //[Fact]
         //public void CoverOptionWithOverlaps_ShouldReturnTheItemsFromTheCoveredOption()

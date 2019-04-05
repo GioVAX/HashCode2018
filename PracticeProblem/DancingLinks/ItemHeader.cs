@@ -5,12 +5,12 @@ namespace DancingLinks
 {
     public class ItemHeader<TItem>
     {
-        public readonly TItem Value;
+        public readonly TItem Item;
         public readonly LinkedList<IDlOption<TItem>> Options;
 
-        public ItemHeader(TItem value)
+        public ItemHeader(TItem item)
         {
-            Value = value;
+            Item = item;
             Options = new LinkedList<IDlOption<TItem>>();
         }
 
@@ -19,12 +19,12 @@ namespace DancingLinks
             if (!(obj is ItemHeader<TItem> other))
                 return false;
 
-            return Value.Equals(other.Value);
+            return Item.Equals(other.Item);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Value, Options);
+            return HashCode.Combine(Item, Options);
         }
     }
 }
