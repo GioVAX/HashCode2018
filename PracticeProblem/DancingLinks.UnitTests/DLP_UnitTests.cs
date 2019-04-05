@@ -106,6 +106,15 @@ namespace DancingLinks.UnitTests
             Sut_ShouldBeCorrect();
         }
 
+        [Fact]
+        public void UncoverOverlappingItem_WillRestoreInitialStatus()
+        {
+            var coverResult = _sut.Cover(_options[1]);
+
+            _sut.Uncover(coverResult);
+
+            Sut_ShouldBeCorrect();
+        }
         #endregion
 
         //[Fact]

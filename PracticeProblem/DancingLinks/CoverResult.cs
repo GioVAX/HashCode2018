@@ -7,13 +7,13 @@ namespace DancingLinks
     {
         private class kkk<K>
         {
-            public K Value { get; }
+            public LinkedListNode<K> Value { get; }
             public LinkedListNode<K> PrevNode { get; }
             public LinkedListNode<K> NextNode { get; }
 
             public kkk(LinkedListNode<K> node)
             {
-                Value = node.Value;
+                Value = node;
                 PrevNode = node.Previous;
                 NextNode = node.Next;
             }
@@ -22,8 +22,8 @@ namespace DancingLinks
         private readonly Stack<kkk<IDlOption<TItem>>> _optionsRemoved;
         private readonly Stack<kkk<ItemHeader<TItem>>> _itemsRemoved;
 
-        public IEnumerable<IDlOption<TItem>> Options => _optionsRemoved.Select(node => node.Value);
-        public IEnumerable<TItem> Items => _itemsRemoved.Select(node => node.Value.Item);
+        public IEnumerable<IDlOption<TItem>> Options => _optionsRemoved.Select(node => node.Value.Value);
+        public IEnumerable<TItem> Items => _itemsRemoved.Select(node => node.Value.Value.Item);
 
         public CoverResult()
         {
@@ -45,7 +45,7 @@ namespace DancingLinks
 
         public void UncoverAll(LinkedList<IDlOption<TItem>> options, LinkedList<ItemHeader<TItem>> items)
         {
-            foreach (var option in _optionsRemoved)
+            while (_optionsRemoved.TryPop(out var option))
             {
                 if (option.PrevNode != null)
                     options.AddAfter(option.PrevNode, option.Value);
@@ -55,7 +55,7 @@ namespace DancingLinks
                     options.AddFirst(option.Value);
             }
 
-            foreach (var item in _itemsRemoved)
+            while (_itemsRemoved.TryPop(out var item))
             {
                 if (item.PrevNode != null)
                     items.AddAfter(item.PrevNode, item.Value);
