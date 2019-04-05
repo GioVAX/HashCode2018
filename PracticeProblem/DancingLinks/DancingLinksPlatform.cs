@@ -11,6 +11,7 @@ namespace DancingLinks
 
         public IEnumerable<IDlOption<TItem>> Options => _options as IReadOnlyCollection<IDlOption<TItem>>;
         public IEnumerable<TItem> Items => _items.Select(hdr => hdr.Item);
+        public IEnumerable<ItemHeader<TItem>> ItemHeaders => _items.AsEnumerable();
 
         public DancingLinksPlatform()
         {
@@ -33,31 +34,33 @@ namespace DancingLinks
 
         public CoverResult<TItem> Cover(IDlOption<TItem> option)
         {
-            var ret = new CoverResult<TItem>();
+            var removed = new CoverResult<TItem>();
 
             var itemHeaders = GetItemHeaders(option);
 
             foreach (var headerNode in itemHeaders)
             {
-                _items.Remove(headerNode);
-                ret.AddItem(headerNode);
+                removed.CoverItem(headerNode);
 
                 var optionsToRemove = headerNode.Value.Options
                     .Select(_options.Find)
                     .Where(opt => opt != null);
 
                 foreach (var optionNode in optionsToRemove)
-                {
-                    _options.Remove(optionNode);
-                    ret.AddOption(optionNode);
-                }
+                    removed.CoverOption(optionNode);
             }
 
-            return ret;
+            return removed;
         }
 
         private LinkedListNode<ItemHeader<TItem>> _AddItem(TItem item) => _items.AddLast(new ItemHeader<TItem>(item));
 
         public void AddItem(TItem item) => _AddItem(item);
+
+        public void Uncover(CoverResult<TItem> coverResult)
+        {
+            coverResult.UncoverAll( _options, _items);
+
+        }
     }
 }

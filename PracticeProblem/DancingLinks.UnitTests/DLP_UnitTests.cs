@@ -31,8 +31,13 @@ namespace DancingLinks.UnitTests
 
             _sut.Items.Should()
                 .BeEquivalentTo(1, 2, 3, 4, 5, 6, 7, 8 );
+
+            _sut.ItemHeaders
+                .Select(hdr => hdr.Options.Count)
+                .Should().ContainInOrder(2, 1, 1, 1, 1, 1, 1, 1);
         }
 
+        #region Cover Tests
         [Fact]
         public void CoverUniqueOption_ShouldKeep2Options()
         {
@@ -49,7 +54,7 @@ namespace DancingLinks.UnitTests
             _sut.Cover(_options[2]);
 
             _sut.Items
-                .Should().BeEquivalentTo(1, 2, 3, 4, 5 );
+                .Should().BeEquivalentTo(1, 2, 3, 4, 5);
         }
 
         [Fact]
@@ -76,7 +81,7 @@ namespace DancingLinks.UnitTests
             var result = _sut.Cover(_options[0]);
 
             result.Items.Should()
-                .BeEquivalentTo(1, 2, 3 );
+                .BeEquivalentTo(1, 2, 3);
         }
 
         [Fact]
@@ -86,7 +91,22 @@ namespace DancingLinks.UnitTests
 
             coverResult.Options.Should()
                 .BeEquivalentTo(_options[0], _options[1]);
+        } 
+        #endregion
+
+        #region Uncover Tests
+
+        [Fact]
+        public void UncoverUniqueItem_WillRestoreInitialStatus()
+        {
+            var coverResult = _sut.Cover(_options[2]);
+
+            _sut.Uncover(coverResult);
+
+            Sut_ShouldBeCorrect();
         }
+
+        #endregion
 
         //[Fact]
         //public void FindOverlappingOptions_UniqueOption_ShouldReturnOnlyTheOption()
