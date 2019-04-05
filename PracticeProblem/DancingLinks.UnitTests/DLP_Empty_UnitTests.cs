@@ -23,10 +23,8 @@ namespace DancingLinks.UnitTests
         {
             _sut.AddItem(item);
 
-            _sut.Items
-                .Should().HaveCount(1)
-                .And.Subject.First()
-                    .Should().Be(item);
+            _sut.Items.Should()
+                .BeEquivalentTo(item);
         }
 
         [Theory, AutoData]
@@ -34,8 +32,8 @@ namespace DancingLinks.UnitTests
         {
             items.ForEach(_sut.AddItem);
 
-            _sut.Items
-                .Should().HaveCount(items.Count);
+            _sut.Items.Should()
+                .HaveCount(items.Count);
         }
 
         [Theory, AutoData]
@@ -43,10 +41,8 @@ namespace DancingLinks.UnitTests
         {
             _sut.AddOption(option);
 
-            _sut.Options
-                .Should().HaveCount(1)
-                .And.Subject.First()
-                    .Should().Be(option);
+            _sut.Options.Should()
+                .BeEquivalentTo(option);
         }
 
         [Theory, AutoData]
@@ -65,9 +61,8 @@ namespace DancingLinks.UnitTests
         {
             options.ForEach(_sut.AddOption);
 
-            _sut.Options
-                .Should().HaveCount(options.Count)
-                .And.ContainInOrder(options);
+            _sut.Options.Should()
+                .BeEquivalentTo(options);
         }
 
         [Theory, AutoData]
@@ -77,8 +72,8 @@ namespace DancingLinks.UnitTests
 
             var expectedItems = options.SelectMany(option => option.Items).Distinct().ToList();
 
-            _sut.Items
-                .Should().HaveCount(expectedItems.Count);
+            _sut.Items.Should()
+                .HaveCount(expectedItems.Count);
         }
 
         [Fact]
@@ -88,7 +83,7 @@ namespace DancingLinks.UnitTests
             _sut.AddOption(new TestOption(new[] { 1, 4, 5 }));
 
             _sut.Items
-                .Should().BeEquivalentTo(new[] { 1, 2, 3, 4, 5 });
+                .Should().BeEquivalentTo(1, 2, 3, 4, 5);
         }
 
         [Fact]
@@ -99,7 +94,7 @@ namespace DancingLinks.UnitTests
             _sut.AddOption(new TestOption(new[] { 1, 4, 5 }));
 
             _sut.Items
-                .Should().BeEquivalentTo(new[] { 1, 4, 5 });
+                .Should().BeEquivalentTo(1, 4, 5);
         }
     }
 }
