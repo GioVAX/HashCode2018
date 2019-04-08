@@ -58,8 +58,17 @@ namespace DancingLinks
         private void _RemoveOption(CoverResult<TItem> result, LinkedListNode<IDlOption<TItem>> optionNode)
         {
             result.AddOption(new RemovedNodeWrapper<IDlOption<TItem>>(optionNode));
-
             _options.Remove(optionNode);
+
+            var k = GetItemHeaders(optionNode.Value)
+                .Where(node => node != null)
+                .Select(n => Tuple.Create(n.Value.Item, n.Value.Options.Find(optionNode.Value)));
+
+            foreach (var (item, node) in k)
+            {
+                result.AddOptionFromItem(new RemovedNodeWrapper<IDlOption<TItem>>(node), item);
+                node.List.Remove(node);
+            }
         }
 
         private void _RemoveItem(CoverResult<TItem> result, LinkedListNode<ItemHeader<TItem>> headerNode)

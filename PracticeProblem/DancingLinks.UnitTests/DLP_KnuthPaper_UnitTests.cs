@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Xunit;
@@ -8,7 +9,7 @@ namespace DancingLinks.UnitTests
     public class DLP_KnuthPaper_UnitTests
     {
         private readonly DancingLinksPlatform<char> _sut;
-        private List<TestOption<char>> _options;
+        private readonly List<TestOption<char>> _options;
 
         public DLP_KnuthPaper_UnitTests()
         {
@@ -31,19 +32,25 @@ namespace DancingLinks.UnitTests
             _sut.Items.Should()
                 .ContainInOrder(expected);
 
-        private void VerifyOptionCounts(params int[] expected) =>
+        private void VerifyOptionCounts(params Tuple<char, int>[] expected) =>
             _sut.ItemHeaders
-                .Select(hdr => hdr.Options.Count)
-                .Should().ContainInOrder(expected);
+                .Select(hdr => Tuple.Create(hdr.Item, hdr.Options.Count))
+                .Should().BeEquivalentTo(expected);
 
         [Fact]
-        public void Sut_ShouldBeCorrect()
+        public void SutInitialStatus_ShouldBeCorrect()
         {
             _sut.Options.Should()
                 .BeEquivalentTo(_options);
 
             VerifyItems('C', 'E', 'F', 'A', 'D', 'G', 'B');
-            VerifyOptionCounts(2, 2, 2, 2, 3, 3, 2);
+            VerifyOptionCounts(Tuple.Create('C', 2),
+                Tuple.Create('E', 2),
+                Tuple.Create('F', 2),
+                Tuple.Create('A', 2),
+                Tuple.Create('D', 3),
+                Tuple.Create('G', 3),
+                Tuple.Create('B', 2));
         }
 
         [Fact]
@@ -63,91 +70,88 @@ namespace DancingLinks.UnitTests
         {
             _sut.Cover(_options[1]);
 
+            SutStep1_ShouldHaveCorrectConfiguration();
+        }
+
+        private void SutStep1_ShouldHaveCorrectConfiguration()
+        {
             _sut.Options.Should()
                 .HaveCount(2);
 
             VerifyItems('C', 'E', 'F', 'B');
-            VerifyOptionCounts(1, 2, 1, 2);
+            VerifyOptionCounts(Tuple.Create('B', 1),
+                Tuple.Create('C', 2),
+                Tuple.Create('E', 1),
+                Tuple.Create('F', 2));
         }
 
-        //[Fact]
-        //public void CoverUniqueOption_ShouldKeep5Items()
-        //{
-        //    _sut.Cover(_options[2]);
+        [Fact]
+        public void UncoverADG_ShouldResetSutToInitialConfiguration()
+        {
+            var result = _sut.Cover(_options[1]);
+            _sut.Uncover(result);
 
-        //    _sut.Items
-        //        .Should().BeEquivalentTo(1, 2, 3, 4, 5);
-        //}
+            SutInitialStatus_ShouldBeCorrect();
+        }
 
-        //[Fact]
-        //public void CoverUniqueOption_ShouldRemoveTheItem()
-        //{
-        //    var result = _sut.Cover(_options[2]);
+        [Fact]
+        public void CoverADG_BCF_ShouldReturnCorrectResult()
+        {
+            _sut.Cover(_options[1]);
+            var result = _sut.Cover(_options[2]);
 
-        //    result.Items
-        //        .Should().BeEquivalentTo(_options[2].Items);
-        //}
+            result.Items.Should()
+                .BeEquivalentTo('B', 'C', 'F');
 
-        //[Fact]
-        //public void CoverUniqueOption_ShouldRemoveTheCoveredOption()
-        //{
-        //    var covered = _sut.Cover(_options[2]);
+            result.Options.Should()
+                .BeEquivalentTo(_options[0], _options[2]);
+        }
 
-        //    covered.Options
-        //        .Should().BeEquivalentTo(_options[2]);
-        //}
+        [Fact]
+        public void CoverADG_BCF_ShouldResultInCorrectConfiguration()
+        {
+            _sut.Cover(_options[1]);
+            _sut.Cover(_options[2]);
 
-        //[Fact]
-        //public void CoverOptionWithOverlaps_ShouldRemoveTheItemsFromTheCoveredOption()
-        //{
-        //    var result = _sut.Cover(_options[0]);
+            _sut.Options.Should().BeEmpty();
 
-        //    result.Items.Should()
-        //        .BeEquivalentTo(1, 2, 3);
-        //}
+            VerifyItems('E');
+            VerifyOptionCounts(Tuple.Create('E', 0));
+        }
 
-        //[Fact]
-        //public void CoverOptionWithOverlaps_ShouldRemoveTheOverlappingOptions()
-        //{
-        //    var coverResult = _sut.Cover(_options[0]);
+        [Fact]
+        public void Uncover_BCF_ShouldResetSutToPreviousStep()
+        {
+            _sut.Cover(_options[1]);
+            var result2 = _sut.Cover(_options[2]);
 
-        //    coverResult.Options.Should()
-        //        .BeEquivalentTo(_options[0], _options[1]);
-        //} 
-        //#endregion
+            _sut.Uncover(result2);
 
-        //#region Uncover Tests
+            SutStep1_ShouldHaveCorrectConfiguration();
+        }
 
-        //[Theory]
-        //[InlineData(0)]
-        //[InlineData(1)]
-        //[InlineData(2)]
-        //[InlineData(4)]
-        //[InlineData(5)]
-        //[InlineData(8)]
-        //[InlineData(3)]
-        //[InlineData(11)]
-        //public void UncoverUniqueItem_WillRestoreInitialStatus(int idx)
-        //{
-        //    var coverResult = _sut.Cover(_options[idx % 3]);
 
-        //    _sut.Uncover(coverResult);
+        [Fact]
+        public void UncoverADG_BCF_ShouldResultSutToInitialConfiguration()
+        {
+            var result1 = _sut.Cover(_options[1]);
+            var result2 = _sut.Cover(_options[2]);
 
-        //    Sut_ShouldBeCorrect();
-        //}
-        //#endregion
+            _sut.Uncover(result2);
+            _sut.Uncover(result1);
 
-        ////[Fact]
-        ////public void FindOverlappingOptions_UniqueOption_ShouldReturnOnlyTheOption()
-        ////{
-        ////    var options = _sut.FindOverlappingOptions(_options[2])
-        ////        .ToList();
+            SutInitialStatus_ShouldBeCorrect();
+        }
 
-        ////    options
-        ////        .Should().HaveCount(1);
+        [Fact]
+        public void FullSetCover_ShouldResultInCorrectConfiguration()
+        {
+            _sut.Cover(_options[3]);
+            _sut.Cover(_options[4]);
+            _sut.Cover(_options[0]);
 
-        ////    options[0]
-        ////        .Should().BeSameAs(_options[2]);
-        ////}
+            _sut.Options.Should().BeEmpty();
+            _sut.Items.Should().BeEmpty();
+        }
     }
 }
