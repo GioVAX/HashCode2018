@@ -36,13 +36,13 @@ namespace DancingLinks
 
             foreach (var headerNode in GetItemHeaders(option))
             {
-                _CoverItem(result, headerNode);
+                _RemoveItem(result, headerNode);
 
                 headerNode.Value.Options
                     .Select(_options.Find)
                     .Where(opt => opt != null)
                     .ToList()
-                    .ForEach(node => _CoverOption(result, node));
+                    .ForEach(node => _RemoveOption(result, node));
             }
 
             return result;
@@ -55,15 +55,16 @@ namespace DancingLinks
 
         private LinkedListNode<ItemHeader<TItem>> _AddItem(TItem item) => _items.AddLast(new ItemHeader<TItem>(item));
 
-        private void _CoverOption(CoverResult<TItem> removed, LinkedListNode<IDlOption<TItem>> optionNode)
+        private void _RemoveOption(CoverResult<TItem> result, LinkedListNode<IDlOption<TItem>> optionNode)
         {
-            removed.CoverOption(new RemovedNodeWrapper<IDlOption<TItem>>(optionNode));
+            result.AddOption(new RemovedNodeWrapper<IDlOption<TItem>>(optionNode));
+
             _options.Remove(optionNode);
         }
 
-        private void _CoverItem(CoverResult<TItem> removed, LinkedListNode<ItemHeader<TItem>> headerNode)
+        private void _RemoveItem(CoverResult<TItem> result, LinkedListNode<ItemHeader<TItem>> headerNode)
         {
-            removed.CoverItem(new RemovedNodeWrapper<ItemHeader<TItem>>(headerNode));
+            result.AddItem(new RemovedNodeWrapper<ItemHeader<TItem>>(headerNode));
             _items.Remove(headerNode);
         }
     }

@@ -17,9 +17,9 @@ namespace DancingLinks
             _itemsRemoved = new Stack<RemovedNodeWrapper<ItemHeader<TItem>>>();
         }
 
-        public void CoverOption(RemovedNodeWrapper<IDlOption<TItem>> option) => _optionsRemoved.Push(option);
+        public void AddOption(RemovedNodeWrapper<IDlOption<TItem>> option) => _optionsRemoved.Push(option);
 
-        public void CoverItem(RemovedNodeWrapper<ItemHeader<TItem>> item) => _itemsRemoved.Push(item);
+        public void AddItem(RemovedNodeWrapper<ItemHeader<TItem>> item) => _itemsRemoved.Push(item);
 
         public void UncoverAll(LinkedList<IDlOption<TItem>> options, LinkedList<ItemHeader<TItem>> items)
         {
