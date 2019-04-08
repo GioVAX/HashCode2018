@@ -1,16 +1,16 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Xunit;
 
 namespace DancingLinks.UnitTests
 {
-    public class DLP_Classic_UnitTests
+    public class DLP_KnuthPaper_UnitTests
     {
         private readonly DancingLinksPlatform<char> _sut;
         private List<TestOption<char>> _options;
 
-        public DLP_Classic_UnitTests()
+        public DLP_KnuthPaper_UnitTests()
         {
             _sut = new DancingLinksPlatform<char>();
 
@@ -46,16 +46,29 @@ namespace DancingLinks.UnitTests
             VerifyOptionCounts(2, 2, 2, 2, 3, 3, 2);
         }
 
-        //#region Cover Tests
-        //[Fact]
-        //public void CoverUniqueOption_ShouldKeep2Options()
-        //{
-        //    _sut.Cover(_options[2]);
+        [Fact]
+        public void CoverADG_ShouldReturnCorrectResult()
+        {
+            var result = _sut.Cover(_options[1]);
 
-        //    _sut.Options.Should()
-        //        .HaveCount(2).And
-        //        .NotContain(_options[2]);
-        //}
+            result.Items.Should()
+                .BeEquivalentTo('A', 'D', 'G');
+
+            result.Options.Should()
+                .BeEquivalentTo(_options[1], _options[3], _options[4], _options[5]);
+        }
+
+        [Fact]
+        public void CoverADG_ShouldResultInCorrectConfiguration()
+        {
+            _sut.Cover(_options[1]);
+
+            _sut.Options.Should()
+                .HaveCount(2);
+
+            VerifyItems('C', 'E', 'F', 'B');
+            VerifyOptionCounts(1, 2, 1, 2);
+        }
 
         //[Fact]
         //public void CoverUniqueOption_ShouldKeep5Items()
