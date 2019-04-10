@@ -40,9 +40,6 @@ namespace DancingLinks.UnitTests
         [Fact]
         public void SutInitialStatus_ShouldBeCorrect()
         {
-            _sut.Options.Should()
-                .BeEquivalentTo(_options);
-
             VerifyItems('C', 'E', 'F', 'A', 'D', 'G', 'B');
             VerifyOptionCounts(Tuple.Create('C', 2),
                 Tuple.Create('E', 2),
@@ -60,9 +57,6 @@ namespace DancingLinks.UnitTests
 
             result.Items.Should()
                 .BeEquivalentTo('A', 'D', 'G');
-
-            result.Options.Should()
-                .BeEquivalentTo(_options[1], _options[3], _options[4], _options[5]);
         }
 
         [Fact]
@@ -75,9 +69,6 @@ namespace DancingLinks.UnitTests
 
         private void SutStep1_ShouldHaveCorrectConfiguration()
         {
-            _sut.Options.Should()
-                .HaveCount(2);
-
             VerifyItems('C', 'E', 'F', 'B');
             VerifyOptionCounts(Tuple.Create('B', 1),
                 Tuple.Create('C', 2),
@@ -102,9 +93,6 @@ namespace DancingLinks.UnitTests
 
             result.Items.Should()
                 .BeEquivalentTo('B', 'C', 'F');
-
-            result.Options.Should()
-                .BeEquivalentTo(_options[0], _options[2]);
         }
 
         [Fact]
@@ -112,8 +100,6 @@ namespace DancingLinks.UnitTests
         {
             _sut.Cover(_options[1]);
             _sut.Cover(_options[2]);
-
-            _sut.Options.Should().BeEmpty();
 
             VerifyItems('E');
             VerifyOptionCounts(Tuple.Create('E', 0));
@@ -150,7 +136,6 @@ namespace DancingLinks.UnitTests
             _sut.Cover(_options[4]);
             _sut.Cover(_options[0]);
 
-            _sut.Options.Should().BeEmpty();
             _sut.Items.Should().BeEmpty();
         }
     }

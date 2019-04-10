@@ -26,8 +26,8 @@ namespace DancingLinks.UnitTests
         [Fact]
         public void Sut_ShouldBeCorrect()
         {
-            _sut.Options.Should()
-                .BeEquivalentTo(_options);
+            _sut.Items.Should()
+                .BeEquivalentTo(_options.SelectMany(opt=>opt.Items).Distinct());
 
             _sut.Items.Should()
                 .BeEquivalentTo(1, 2, 3, 4, 5, 6, 7, 8 );

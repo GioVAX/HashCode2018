@@ -12,8 +12,6 @@ namespace DancingLinks.UnitTests
 
         public DLP_Empty_UnitTests() => _sut = new DancingLinksPlatform<int>();
 
-        [Fact]
-        public void EmptyPlatform_ShouldHaveNoOptions() => _sut.Options.Should().BeEmpty();
 
         [Fact]
         public void EmptyPlatform_ShouldHaveNoItems() => _sut.Items.Should().BeEmpty();
@@ -41,8 +39,8 @@ namespace DancingLinks.UnitTests
         {
             _sut.AddOption(option);
 
-            _sut.Options.Should()
-                .BeEquivalentTo(option);
+            _sut.Items.Should()
+                .BeEquivalentTo(option.Items);
         }
 
         [Theory, AutoData]
@@ -55,16 +53,6 @@ namespace DancingLinks.UnitTests
                 .Should().HaveCount(option.Items.Count());
         }
 
-
-        [Theory, AutoData]
-        public void WhenTwoOptionsAreAdded_ShouldHaveTwoOptionsInTheRightOrder(List<TestOption<int>> options)
-        {
-            options.ForEach(_sut.AddOption);
-
-            _sut.Options.Should()
-                .BeEquivalentTo(options);
-        }
-
         [Theory, AutoData]
         public void WhenTwoOptionsAreAdded_ShouldHaveAllTheItemsOfAllTheOptionsWithNoDuplicates(List<TestOption<int>> options)
         {
@@ -73,7 +61,7 @@ namespace DancingLinks.UnitTests
             var expectedItems = options.SelectMany(option => option.Items).Distinct().ToList();
 
             _sut.Items.Should()
-                .HaveCount(expectedItems.Count);
+                .BeEquivalentTo(expectedItems);
         }
 
         [Fact]

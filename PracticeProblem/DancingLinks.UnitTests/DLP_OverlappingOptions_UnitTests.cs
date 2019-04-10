@@ -8,15 +8,6 @@ namespace DancingLinks.UnitTests
     public class DLP_OverlappingOptions_UnitTests : DLP_UnitTests_Base
     {
         [Fact]
-        public void CoverOptionWithOverlaps_ShouldKeep1Option()
-        {
-            _sut.Cover(_options[0]);
-
-            _sut.Options.Should()
-                .BeEquivalentTo(_options[2]);
-        }
-
-        [Fact]
         public void CoverOptionWithOverlaps_ShouldKeep5Items()
         {
             _sut.Cover(_options[0]);
@@ -48,16 +39,6 @@ namespace DancingLinks.UnitTests
             result.Items.Should()
                 .BeEquivalentTo(1, 2, 3);
         }
-
-        [Fact]
-        public void CoverOptionWithOverlaps_ShouldRemoveTheOverlappingOptions()
-        {
-            var coverResult = _sut.Cover(_options[0]);
-
-            coverResult.Options.Should()
-                .BeEquivalentTo(_options[0], _options[1]);
-        }
-
 
 
         //[Fact]
