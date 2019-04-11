@@ -8,13 +8,15 @@ namespace DancingLinks
     {
         private readonly Stack<RemovedNodeWrapper<ItemHeader<TItem>>> _itemsRemoved;
         private readonly Stack<Tuple<TItem, RemovedNodeWrapper<IDlOption<TItem>>>> _itemOptionsRemoved;
-
+        
+        public IDlOption<TItem> Option { get; }
         public IEnumerable<TItem> Items => _itemsRemoved.Select(node => node.Value.Value.Item);
 
-        public CoverResult()
+        public CoverResult( IDlOption<TItem> option)
         {
             _itemsRemoved = new Stack<RemovedNodeWrapper<ItemHeader<TItem>>>();
             _itemOptionsRemoved = new Stack<Tuple<TItem, RemovedNodeWrapper<IDlOption<TItem>>>>();
+            Option = option;
         }
 
         public void AddItem(RemovedNodeWrapper<ItemHeader<TItem>> item) => _itemsRemoved.Push(item);

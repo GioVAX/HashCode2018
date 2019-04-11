@@ -26,7 +26,7 @@ namespace DancingLinks
 
         public CoverResult<TItem> Cover(IDlOption<TItem> option)
         {
-            var result = new CoverResult<TItem>();
+            var result = new CoverResult<TItem>(option);
 
             var headers = GetItemHeaders(option);
 

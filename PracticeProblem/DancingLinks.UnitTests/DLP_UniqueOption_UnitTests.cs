@@ -39,8 +39,8 @@ namespace DancingLinks.UnitTests
         {
             var covered = _sut.Cover(_options[2]);
 
-            //covered.Options
-            //    .Should().BeEquivalentTo(_options[2]);
+            covered.Option
+                .Should().BeEquivalentTo(_options[2]);
         }
 
 
