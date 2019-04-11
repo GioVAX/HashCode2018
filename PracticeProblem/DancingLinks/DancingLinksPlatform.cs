@@ -24,8 +24,6 @@ namespace DancingLinks
 
         public void AddItem(TItem item) => _AddItem(item);
 
-        public void Uncover(CoverResult<TItem> coverResult) => coverResult.UncoverAll(_items);
-
         public CoverResult<TItem> Cover(IDlOption<TItem> option)
         {
             var result = new CoverResult<TItem>();
@@ -41,6 +39,31 @@ namespace DancingLinks
                 .ForEach(opt => _RemoveOption(result, opt));
 
             return result;
+        }
+
+        public void Uncover(CoverResult<TItem> coverResult)
+        {
+            foreach (var coveredItem in coverResult.CoveredItems)
+            {
+                if (coveredItem.PrevNode != null)
+                    _items.AddAfter(coveredItem.PrevNode, coveredItem.Value);
+                else if (coveredItem.NextNode != null)
+                    _items.AddBefore(coveredItem.NextNode, coveredItem.Value);
+                else
+                    _items.AddFirst(coveredItem.Value);
+            }
+
+            foreach (var (item, node) in coverResult.CoveredOptions)
+            {
+                var itemHeader = _items.Find(new ItemHeader<TItem>(item));
+
+                if (node.PrevNode != null)
+                    itemHeader.Value.Options.AddAfter(node.PrevNode, node.Value);
+                else if (node.NextNode != null)
+                    itemHeader.Value.Options.AddBefore(node.NextNode, node.Value);
+                else
+                    itemHeader.Value.Options.AddFirst(node.Value);
+            }
         }
 
         private List<LinkedListNode<ItemHeader<TItem>>> GetItemHeaders(IDlOption<TItem> option,
@@ -60,7 +83,7 @@ namespace DancingLinks
 
             foreach (var (item, node) in optionNodes)
             {
-                result.AddOptionFromItem(new RemovedNodeWrapper<IDlOption<TItem>>(node), item);
+                result.AddOptionNode(Tuple.Create(item, new RemovedNodeWrapper<IDlOption<TItem>>(node)));
                 node.List.Remove(node);
             }
         }

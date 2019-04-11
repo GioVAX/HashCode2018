@@ -19,33 +19,24 @@ namespace DancingLinks
 
         public void AddItem(RemovedNodeWrapper<ItemHeader<TItem>> item) => _itemsRemoved.Push(item);
 
-        public void AddOptionFromItem(RemovedNodeWrapper<IDlOption<TItem>> itemOption, TItem item) =>
-            _itemOptionsRemoved.Push(Tuple.Create(item, itemOption));
+        public void AddOptionNode(Tuple<TItem, RemovedNodeWrapper<IDlOption<TItem>>> tuple) =>
+            _itemOptionsRemoved.Push(tuple);
 
-        public void UncoverAll(LinkedList<ItemHeader<TItem>> items)
+        public IEnumerable<RemovedNodeWrapper<ItemHeader<TItem>>> CoveredItems
         {
-            while (_itemsRemoved.TryPop(out var item))
+            get
             {
-                if (item.PrevNode != null)
-                    items.AddAfter(item.PrevNode, item.Value);
-                else if (item.NextNode != null)
-                    items.AddBefore(item.NextNode, item.Value);
-                else
-                    items.AddFirst(item.Value);
+                while (_itemsRemoved.TryPop(out var item))
+                    yield return item;
             }
+        }
 
-            while (_itemOptionsRemoved.TryPop(out var removedNode))
+        public IEnumerable<Tuple<TItem, RemovedNodeWrapper<IDlOption<TItem>>>> CoveredOptions
+        {
+            get
             {
-                var (item, node) = removedNode;
-
-                var itemHeader = items.Find(new ItemHeader<TItem>(item));
-
-                if (node.PrevNode != null)
-                    itemHeader.Value.Options.AddAfter(node.PrevNode, node.Value);
-                else if (node.NextNode != null)
-                    itemHeader.Value.Options.AddBefore(node.NextNode, node.Value);
-                else
-                    itemHeader.Value.Options.AddFirst(node.Value);
+                while (_itemOptionsRemoved.TryPop(out var tuple))
+                    yield return tuple;
             }
         }
     }
