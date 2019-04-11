@@ -33,7 +33,7 @@ namespace DancingLinks.UnitTests
         public void WhenProblemHasSolution_ShouldFindCorrectSolution()
         {
             _options.ForEach(_sut.AddOption);
-         
+
             var result = _sut.Solve();
 
             result.Should()
@@ -45,12 +45,23 @@ namespace DancingLinks.UnitTests
         {
             foreach (var option in _options.Skip(1))
                 _sut.AddOption(option);
-         
+
             var result = _sut.Solve();
 
             result.Should()
                 .HaveCount(0);
         }
 
+        [Fact]
+        public void WhenAddingItemsToSolvableProblem_ShouldFindNullSolution()
+        {
+            _options.ForEach(_sut.AddOption);
+            _sut.AddItem('Z');
+
+            var result = _sut.Solve();
+
+            result.Should()
+                .HaveCount(0);
+        }
     }
 }
