@@ -36,7 +36,7 @@ namespace DancingLinks.UnitTests
 
             var result = _sut.Solve();
 
-            result.Should()
+            result.Items.Should()
                 .BeEquivalentTo(_options[3], _options[4], _options[0]);
         }
 
@@ -48,7 +48,7 @@ namespace DancingLinks.UnitTests
 
             var result = _sut.Solve();
 
-            result.Should()
+            result.Items.Should()
                 .HaveCount(0);
         }
 
@@ -60,7 +60,7 @@ namespace DancingLinks.UnitTests
 
             var result = _sut.Solve();
 
-            result.Should()
+            result.Items.Should()
                 .HaveCount(0);
         }
     }

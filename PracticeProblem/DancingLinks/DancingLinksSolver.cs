@@ -16,9 +16,9 @@ namespace DancingLinks
         public void AddOption(IDlOption<TItem> option) => _platform.AddOption(option);
         public void AddItem(TItem item) => _platform.AddItem(item);
 
-        public IEnumerable<IDlOption<TItem>> Solve()
+        public DLSolution<TItem> Solve()
         {
-            var candidateSolution = new Stack<CoverResult<TItem>>();
+            var candidateSolution = new DLSolution<TItem>();
 
             var triedSolutions = new List<CoverResult<TItem>>();
 
@@ -26,20 +26,23 @@ namespace DancingLinks
             {
                 var option = SelectOptionToCover(_platform, triedSolutions.Select(sol => sol.Option));
                 if (option != null)
-                    candidateSolution.Push(_platform.Cover(option));
+                {
+                    candidateSolution.AddStep(_platform.Cover(option));
+                    triedSolutions.Clear();     // Clear for the next iteration
+                }
                 else
                 {
-                    if (AcceptableSolution(candidateSolution, _platform) || candidateSolution.Count == 0)
+                    if (IsAcceptableSolution(candidateSolution.Items, _platform) || !candidateSolution.Items.Any())
                         break; // Solution found or no solution is possible
 
-                    triedSolutions.Add(candidateSolution.Pop());
+                    triedSolutions.Add(candidateSolution.TraceBack());
                 }
             }
 
-            return candidateSolution.Select(cr => cr.Option);
+            return candidateSolution;
         }
 
-        private static bool AcceptableSolution(Stack<CoverResult<TItem>> candidateSolution, DancingLinksPlatform<TItem> platform) => !platform.Items.Any();
+        private static bool IsAcceptableSolution(IEnumerable<IDlOption<TItem>> candidateSolution, DancingLinksPlatform<TItem> platform) => !platform.Items.Any();
 
         private static IDlOption<TItem> SelectOptionToCover(DancingLinksPlatform<TItem> platform, IEnumerable<IDlOption<TItem>> tried)
         {
