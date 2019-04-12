@@ -6,12 +6,12 @@ using Xunit;
 
 namespace DancingLinks.UnitTests
 {
-    public class DLP_Solver_UnitTests
+    public class DLP_Solver_BasicUnitTests
     {
         private readonly DancingLinksSolver<char> _sut;
         private readonly List<TestOption<char>> _options;
 
-        public DLP_Solver_UnitTests()
+        public DLP_Solver_BasicUnitTests()
         {
             _sut = new DancingLinksSolver<char>();
 

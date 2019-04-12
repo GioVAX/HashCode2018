@@ -66,8 +66,7 @@ namespace DancingLinks
             }
         }
 
-        private List<LinkedListNode<ItemHeader<TItem>>> GetItemHeaders(IDlOption<TItem> option,
-            bool createIfMissing = false) =>
+        private List<LinkedListNode<ItemHeader<TItem>>> GetItemHeaders(IDlOption<TItem> option, bool createIfMissing = false) =>
             option.Items
                 .Select(i => new ItemHeader<TItem>(i))
                 .Select(ih => createIfMissing ? _items.Find(ih) ?? _AddItem(ih.Item) : _items.Find(ih))
